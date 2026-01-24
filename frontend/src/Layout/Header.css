@@ -1,0 +1,343 @@
+/* TOP HEADER WHITE AREA */
+.jf-header {
+  width: auto;
+  height: 70px;
+  background: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 28px;
+  border-bottom: 1px solid #e5e5e5;
+
+  /* STICKY HEADER */
+  position: sticky;
+  top: 0;
+  z-index: 9999;
+}
+
+.avatar-img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+
+.jf-left {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.jf-logo {
+  height: 30px;
+  width: auto;
+  cursor: pointer;
+}
+
+.jf-center {
+  flex: 1;
+  text-align: center;
+}
+
+.jf-title {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 600;
+  color: #222;
+}
+
+.jf-right {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.jf-user-icon {
+  color: #444;
+}
+
+
+/* BLUE/PURPLE TAB BAR */
+.jf-bluebar {
+  width: 100%;
+  height: 40px;
+  background: #39393B;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+
+  /* SECOND STICKY BAR (Under header) */
+  position: sticky;
+  top: 70px;
+  /* white header height */
+  z-index: 9998;
+}
+
+.jf-tab {
+  padding: 10px 35px;
+  color: #e6e6e6;
+  font-size: 15px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.2s ease-in-out;
+}
+
+.jf-tab:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.jf-tab.active {
+  background: #5550FF;
+  color: white !important;
+}
+
+.logout-btn {
+  background: #ff4d4f;
+  color: #fff;
+  border: none;
+  padding: 10px 13px;
+  font-size: 13px;
+  font-weight: 600;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-left: 15px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  box-shadow: 0 2px 6px rgba(255, 0, 0, 0.2);
+  transition: all 0.25s ease;
+}
+
+.logout-btn:hover {
+  background: #d9363e;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(255, 0, 0, 0.3);
+}
+
+.logout-btn:active {
+  transform: scale(0.97);
+}
+
+
+
+/* =========================
+   MOBILE HEADER (ONLY)
+   ========================= */
+@media (max-width: 768px) {
+
+  /* TOP WHITE HEADER */
+  .jf-header {
+    height: 70px;
+    padding: 0 14px;
+  }
+
+  .jf-logo {
+    height: 18px;
+  }
+
+  /* TITLE CENTER */
+  .jf-title {
+    font-size: 15px;
+    font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 160px;
+    margin: 0 auto;
+  }
+
+  /* RIGHT ICONS */
+  .jf-user-icon {
+    font-size: 26px;
+  }
+
+  /* HIDE LOGOUT BUTTON ON MOBILE */
+  .logout-btn {
+    display: none;
+  }
+
+  /* =========================
+     BLUE TAB BAR
+     ========================= */
+  /* BLUE BAR */
+  .jf-bluebar {
+    padding: 0;
+    gap: 10px;
+    display: flex;
+  }
+
+  /* TAB */
+  .jf-tab {
+    width: 25%;
+    text-align: center;
+    font-size: 13px;
+    font-weight: 500;
+    color: #eaeaff;
+    padding: 12px 0;
+    border-radius: 0;
+    background: transparent;
+    transition: background 0.2s ease;
+  }
+
+  /* ACTIVE TAB (LIGHT PURPLE) */
+  .jf-tab.active {
+    color: #ffffff;
+  }
+}
+
+/* ================= PROFILE POPUP ================= */
+
+.profile-popup {
+  position: fixed;
+  top: 64px;
+  right: 20px;
+  width: 340px;
+  background: #ffffff;
+  border-radius: 14px;
+  box-shadow: 0 20px 40px rgba(15, 23, 42, 0.18);
+  z-index: 10000;
+  padding: 18px;
+}
+
+/* ---------- Header ---------- */
+.profile-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.profile-avatar {
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.profile-hello {
+  margin: 0;
+  font-size: 13px;
+  color: #64748b;
+}
+
+.profile-name {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.profile-plan {
+  margin-left: auto;
+  background: #22c55e;
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 8px;
+}
+
+/* ---------- Progress ---------- */
+.profile-progress {
+  background: #f8fafc;
+  border-radius: 10px;
+  padding: 12px;
+  margin-bottom: 14px;
+}
+
+.progress-title {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  margin-bottom: 8px;
+}
+
+.progress-bar {
+  height: 8px;
+  background: #e5e7eb;
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.progress-bar span {
+  display: block;
+  height: 100%;
+  background: #ef4444;
+}
+
+/* ---------- Button ---------- */
+.upgrade-btn {
+  width: 100%;
+  background: #0f172a;
+  color: #ffffff;
+  border: none;
+  border-radius: 10px;
+  padding: 12px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-bottom: 12px;
+}
+
+/* ---------- Menu ---------- */
+.profile-menu {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  border-top: 1px solid #e5e7eb;
+}
+
+.profile-menu li {
+  padding: 12px 6px;
+  font-size: 14px;
+  cursor: pointer;
+  border-radius: 8px;
+}
+
+.profile-menu li:hover {
+  background: #f1f5f9;
+}
+
+/* ================= MOBILE RESPONSIVE ================= */
+
+@media (max-width: 768px) {
+  .profile-popup {
+    position: fixed;
+    top: 70px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: calc(100% - 24px);
+    max-width: 380px;
+    right: auto;
+  }
+
+  .jf-title {
+    font-size: 14px;
+  }
+}
+
+
+
+.avatar-initials {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #4f46e5;
+  color: #fff;
+  font-weight: 600;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.profile-avatar .avatar-initials {
+  width: 40px;
+  height: 40px;
+  font-size: 16px;
+  border-radius: 50%;
+}
