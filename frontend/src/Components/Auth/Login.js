@@ -16,7 +16,7 @@ const Login = ({ setUser }) => {
   const {
     register,
     handleSubmit,
-    formState: { errors },    
+    formState: { errors },
   } = useForm({ mode: "onBlur" });
 
   const onSubmit = async (data) => {
@@ -29,10 +29,12 @@ const Login = ({ setUser }) => {
 
       if (response.status === 200) {
         const { accessToken, user } = response.data;
+        const userId = user?._id || user?.id || user?.userId;
+
         localStorage.setItem("accessToken", accessToken);
         localStorage.setItem("user", JSON.stringify(user));
         setUser(user);
-        navigate("/dashboard/train", { replace: true });
+        navigate(`/dashboard/knowledge/${userId}`, { replace: true });
       }
     } catch (error) {
       alert(error.response?.data?.message || "Login failed");

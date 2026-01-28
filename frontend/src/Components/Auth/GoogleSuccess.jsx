@@ -16,6 +16,7 @@ const GoogleSuccess = ({ setUser }) => {
     }
 
     const user = JSON.parse(decodeURIComponent(userParam));
+    const userId = user?.id || user?._id;
 
     // ✅ Same as normal login
     localStorage.setItem("accessToken", token);
@@ -24,7 +25,7 @@ const GoogleSuccess = ({ setUser }) => {
     setUser(user);
 
     // ✅ SAME dashboard route as normal login
-    navigate("/dashboard/knowledge", { replace: true });
+    navigate(`/dashboard/knowledge/${userId}`, { replace: true });
   }, [navigate, setUser]);
 
   return (

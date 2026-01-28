@@ -28,7 +28,6 @@ import DashboardLayout from "./Layout/DashboardLayout";
 import AIPersona from "./Layout/dashboard-pages/AIPersona";
 import Knowledge from "./Layout/dashboard-pages/KnowledgeBase";
 import TeachAgent from "./Layout/dashboard-pages/TeachAgent/TeachAgent";
-import Welcome from "./Layout/dashboard-pages/Welcome";
 import AddWebsiteForm from "./Layout/dashboard-pages/AddWebsiteForm";
 import FileUpload from "./Layout/dashboard-pages/FileUpload";
 import VoiceAgent from "./Layout/dashboard-pages/VoiceAgent";
@@ -94,9 +93,15 @@ function AppContent() {
     setAuthLoading(false);
   }, []);
 
+
   useEffect(() => {
     if (user) localStorage.setItem("user", JSON.stringify(user));
   }, [user]);
+
+  const getUserId = () => {
+    const u = JSON.parse(localStorage.getItem("user"));
+    return u?._id || u?.id || u?.userId || null;
+  };
 
   /* ❌ HEADER HIDE ROUTES */
   const hideHeaderRoutes = [
@@ -151,11 +156,24 @@ function AppContent() {
           {/* AUTH */}
           <Route
             path="/login"
-            element={!user ? <Login setUser={setUser} /> : <Navigate to="/dashboard" />}
+            element={
+              !user ? (
+                <Login setUser={setUser} />
+              ) : (
+                <Navigate to={`/dashboard/knowledge/${getUserId()}`} replace />
+              )
+            }
+
           />
           <Route
             path="/register"
-            element={!user ? <Register /> : <Navigate to="/dashboard" />}
+            element={
+              !user ? (
+                <Register />
+              ) : (
+                <Navigate to={`/dashboard/knowledge/${getUserId()}`} replace />
+              )
+            }
           />
 
           <Route path="/google-success" element={<GoogleSuccess setUser={setUser} />} />
@@ -175,7 +193,7 @@ function AppContent() {
 
           {/* CHATBOT */}
           <Route
-            path="/custom-chat"
+            path="/custom-chat/:userId"
             element={
               <ProtectedRoute user={user}>
                 <CustomChatPage />
@@ -203,17 +221,29 @@ function AppContent() {
               </ProtectedRoute>
             }
           >
-            <Route index element={<Navigate to="knowledge" replace />} />
-            <Route path="train" element={<Welcome />} />
-            <Route path="persona" element={<AIPersona />} />
-            <Route path="knowledge" element={<Knowledge />} />
-            <Route path="knowledge/file" element={<FileUpload />} />
-            <Route path="knowledge/qa" element={<QAPage />} />
-            <Route path="knowledge/qa/new" element={<EditQA />} />
-            <Route path="knowledge/qa/edit/:id" element={<EditQA />} />
-            <Route path="knowledge/add-website" element={<AddWebsiteForm user={user} />} />
-            <Route path="teach" element={<TeachAgent user={user} />} />
-            <Route path="voice-agent" element={<VoiceAgent />} />
+            <Route
+              index
+              element={
+                <Navigate
+                  to={`knowledge/${JSON.parse(localStorage.getItem("user"))?._id ||
+                    JSON.parse(localStorage.getItem("user"))?.id
+                    }`}
+                  replace
+                />
+              }
+            />
+
+
+            <Route path="knowledge/:userId" element={<Knowledge />} />
+            <Route path="knowledge/file/:userId" element={<FileUpload />} />
+            <Route path="knowledge/qa/:userId" element={<QAPage />} />
+            <Route path="knowledge/qa/new/:userId" element={<EditQA />} />
+            <Route path="knowledge/qa/edit/:id/:userId" element={<EditQA />} />
+            <Route path="knowledge/add-website/:userId" element={<AddWebsiteForm user={user} />} />
+
+            <Route path="persona/:userId" element={<AIPersona />} />
+            <Route path="teach/:userId" element={<TeachAgent user={user} />} />
+            <Route path="voice-agent/:userId" element={<VoiceAgent />} />
           </Route>
 
           {/* SETTINGS */}
@@ -225,10 +255,10 @@ function AppContent() {
               </ProtectedRoute>
             }
           >
-            <Route index element={<Navigate to="account" replace />} />
-            <Route path="account" element={<Account />} />
-            <Route path="security" element={<Security />} />
+            <Route path="account/:userId" element={<Account />} />
+            <Route path="security/:userId" element={<Security />} />
           </Route>
+
 
           {/* ADMIN CONSOLE */}
           <Route
@@ -255,7 +285,7 @@ function AppContent() {
       </main>
 
       {/* ✅ Footer ALWAYS at bottom */}
-        {!user && !location.pathname.startsWith("/embed/chat") && <Footer />}
+      {!user && !location.pathname.startsWith("/embed/chat") && <Footer />}
 
     </>
   );

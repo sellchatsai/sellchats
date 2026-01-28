@@ -102,7 +102,9 @@ export default function HomeHeader() {
 
                 <ul className="mobile-nav-list">
                     <li>
-                        <NavLink to="/" end onClick={() => setMenuOpen(false)}>Home</NavLink>
+                        <NavLink to="/" end onClick={() => setMenuOpen(false)}>
+                            Home
+                        </NavLink>
                     </li>
 
                     {/* SUPPORT */}
@@ -119,9 +121,15 @@ export default function HomeHeader() {
                         </div>
 
                         <div className="mobile-support-dropdown">
-                            <Link to="/contact-support">Contact Support</Link>
-                            <Link to="/help-center">Help Center</Link>
-                            <Link to="/faq">FAQ</Link>
+                            <NavLink to="/contact-support" onClick={() => setMenuOpen(false)}>
+                                Contact Support
+                            </NavLink>
+                            <NavLink to="/contact-support" onClick={() => setMenuOpen(false)}>
+                                Help Center
+                            </NavLink>
+                            <NavLink to="/faq" onClick={() => setMenuOpen(false)}>
+                                FAQ
+                            </NavLink>
                         </div>
                     </li>
 
@@ -139,22 +147,53 @@ export default function HomeHeader() {
                         </div>
 
                         <div className="mobile-integrations-dropdown">
-                            {[WordPress, Shopify, Wix, GoDaddy, Framer, Blogger, Google, Joomla].map(
-                                (img, i) => (
-                                    <div className="mobile-integration-item" key={i}>
-                                        <img src={img} alt="integration" />
-                                        <span>
-                                            {["WordPress", "Shopify", "Wix", "GoDaddy", "Framer", "Blogger", "Google", "Joomla"][i]}
-                                        </span>
-                                    </div>
-                                )
-                            )}
+                            {[
+                                WordPress,
+                                Shopify,
+                                Wix,
+                                GoDaddy,
+                                Framer,
+                                Blogger,
+                                Google,
+                                Joomla
+                            ].map((img, i) => (
+                                <div
+                                    key={i}
+                                    className="mobile-integration-item"
+                                    onClick={() => setMenuOpen(false)}
+                                >
+                                    <img src={img} alt="integration" />
+                                    <span>
+                                        {[
+                                            "WordPress",
+                                            "Shopify",
+                                            "Wix",
+                                            "GoDaddy",
+                                            "Framer",
+                                            "Blogger",
+                                            "Google",
+                                            "Joomla"
+                                        ][i]}
+                                    </span>
+                                </div>
+                            ))}
                         </div>
                     </li>
 
-                    <li>Pricing</li>
-                    <li>Blog</li>
+                    {/* NORMAL LINKS */}
+                    <li>
+                        <NavLink to="/pricing" onClick={() => setMenuOpen(false)}>
+                            Pricing
+                        </NavLink>
+                    </li>
+
+                    <li>
+                        <NavLink to="/blog" onClick={() => setMenuOpen(false)}>
+                            Blog
+                        </NavLink>
+                    </li>
                 </ul>
+
 
                 <div className="mobile-actions">
                     <Link to="/login" className="login-btn">Login</Link>

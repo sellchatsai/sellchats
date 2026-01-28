@@ -14,7 +14,7 @@ export default function PricingPage() {
                 <div className="container">
 
                     {/* PAGE TITLE */}
-                    <div className="pricing-header">
+                    <div className="pricing-header fade-up">
                         <h1>
                             SellChats <span>Pricing</span>
                         </h1>
@@ -23,7 +23,7 @@ export default function PricingPage() {
 
                     {/* MOST POPULAR CARD */}
                     <div className="pricing-wrapper">
-                        <div className="pricing-card popular">
+                        <div className="pricing-card popular fade-up delay-1">
 
                             <div className="popular-badge">MOST POPULAR</div>
 

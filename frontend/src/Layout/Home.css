@@ -2,6 +2,35 @@
     background: var(--bg-page);
 }
 
+.hero-image-wrapper {
+    position: relative;
+    display: inline-block;
+}
+
+
+.hero-image {
+    display: block;
+}
+
+
+.hero-gif {
+    position: absolute;
+    bottom: 17px;
+    right: 23px;
+    width: 400px;
+    height: auto;
+    z-index: 3;
+    pointer-events: none;
+}
+
+@media (max-width: 768px) {
+    .hero-gif {
+        width: 200px;
+        bottom: 12px;
+        right: 14px;
+    }
+}
+
 
 /* =========================
    CONTAINER SYSTEM
@@ -533,7 +562,7 @@
 }
 
 .testimonials-header h2 {
-    font-size: 38px;
+    font-size: 30px;
     font-weight: 700;
     margin-bottom: 24px;
 }

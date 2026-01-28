@@ -11,7 +11,13 @@ function Header({ user, setUser }) {
   const location = useLocation();
   const apiBase = "http://localhost:4000";
 
-  const userId = user?.id || user?._id;
+  const storedUser = JSON.parse(localStorage.getItem("user"));
+  const userId =
+    user?.id ||
+    user?._id ||
+    storedUser?.id ||
+    storedUser?._id ||
+    storedUser?.userId;
 
   const [popup, setPopup] = useState({
     show: false,
@@ -32,7 +38,6 @@ function Header({ user, setUser }) {
 
 
   const isAdminRoute = location.pathname.startsWith("/admin");
-
 
 
 
@@ -86,14 +91,14 @@ function Header({ user, setUser }) {
         message: "Please upload WEBSITE first to customize chatbot.",
         onConfirm: () => {
           setPopup({ ...popup, show: false });
-          navigate("/dashboard/knowledge");
+          navigate(`/dashboard/knowledge/${userId}`);
         },
       });
       return;
     }
 
 
-    navigate("/custom-chat");
+    navigate(`/custom-chat/${userId}`);
   };
 
   const handlePublishClick = () => {
@@ -116,7 +121,7 @@ function Header({ user, setUser }) {
       <header className="jf-header">
         <div
           className="jf-left"
-          onClick={() => navigate("/dashboard/knowledge")}
+          onClick={() => navigate(`/dashboard/knowledge/${userId}`)}
         >
           <img src={logo} className="jf-logo" alt="logo" />
         </div>
@@ -234,7 +239,7 @@ function Header({ user, setUser }) {
       {!isAdminRoute && (
         <div className="jf-bluebar">
           <NavLink
-            to="/dashboard/knowledge"
+            to={`/dashboard/knowledge/${userId}`}
             className={`jf-tab ${isTrainActive ? "active" : ""}`}
           >
             TRAIN

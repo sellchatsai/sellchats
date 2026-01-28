@@ -1,11 +1,11 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import HomeHeader from "./HomeHeader";
 import arrowDownIcon from "../image/arrow-down-sign-to-navigate.png";
 import "./FAQPage.css";
-import HomeHeader from "./HomeHeader";
 
 const leftFaqs = [
   { id: "l1", q: "Can I test ChatBot for free?", a: "Yes, you can try ChatBot for free with limited features." },
-  { id: "l2", q: "Are technical skills required?", a: "No, anyone can set it up easily." },
+  { id: "l2", q: "Are technical skills required?", a: "No, anyone can set it up easily without any coding." },
   { id: "l3", q: "Can ChatBot be integrated with LiveChat?", a: "Yes, ChatBot integrates smoothly with LiveChat tools." },
   { id: "l4", q: "What is a chatbot?", a: "A chatbot is software that chats with users automatically." }
 ];
@@ -14,12 +14,12 @@ const rightFaqs = [
   { id: "r1", q: "Does installing ChatBot require coding?", a: "No coding is required. Just copy-paste the script." },
   { id: "r2", q: "What is a generative AI chatbot?", a: "It uses AI models to generate smart replies." },
   { id: "r3", q: "Can one chatbot work on multiple channels?", a: "Yes, one bot can serve website, WhatsApp and more." },
-  { id: "r4", q: "How does a generative AI chatbot work?", a: "It learns from data and responds intelligently." }
+  { id: "r4", q: "How does a generative AI chatbot work?", a: "It learns from your content and responds intelligently." }
 ];
 
 function FAQItem({ item, isOpen, onClick }) {
   return (
-    <div className={`faq-item ${isOpen ? "open" : ""}`}>
+    <div className={`faq-item fade-up ${isOpen ? "open" : ""}`}>
       <button className="faq-question" onClick={onClick}>
         {item.q}
         <span className="faq-arrow">
@@ -27,7 +27,10 @@ function FAQItem({ item, isOpen, onClick }) {
         </span>
       </button>
 
-      <div className="faq-answer-wrapper" style={{ maxHeight: isOpen ? "200px" : "0" }}>
+      <div
+        className="faq-answer-wrapper"
+        style={{ maxHeight: isOpen ? "160px" : "0px" }}
+      >
         <div className="faq-answer">{item.a}</div>
       </div>
     </div>
@@ -37,17 +40,37 @@ function FAQItem({ item, isOpen, onClick }) {
 export default function FAQPage() {
   const [activeId, setActiveId] = useState(null);
 
+  // Scroll animation
+  useEffect(() => {
+    const items = document.querySelectorAll(".fade-up");
+
+    const observer = new IntersectionObserver(
+      entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("show");
+          }
+        });
+      },
+      { threshold: 0.15 }
+    );
+
+    items.forEach(item => observer.observe(item));
+
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <>
-      {/* ✅ SHOW HEADER */}
       <HomeHeader />
 
-      <section className="faq-section">
+      <section className="faq-section-page">
         <div className="container">
-          <h1 className="faq-title">Frequently Asked Questions</h1>
+          <h1 className="faq-title fade-up">
+            Frequently Asked Questions
+          </h1>
 
           <div className="faq-grid">
-            {/* LEFT */}
             <div className="faq-col">
               {leftFaqs.map(item => (
                 <FAQItem
@@ -61,7 +84,6 @@ export default function FAQPage() {
               ))}
             </div>
 
-            {/* RIGHT */}
             <div className="faq-col">
               {rightFaqs.map(item => (
                 <FAQItem
@@ -77,8 +99,6 @@ export default function FAQPage() {
           </div>
         </div>
       </section>
-
-     
     </>
   );
 }

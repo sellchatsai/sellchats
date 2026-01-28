@@ -118,7 +118,7 @@ const AddWebsiteForm = ({ user }) => {
             cursor: storedWebsite ? "not-allowed" : "pointer"
           }}
         >
-          {popupLoading ? "Uploading..." : "Crawl"}
+          {popupLoading ? "Uploading..." : "Upload"}
         </button>
 
 

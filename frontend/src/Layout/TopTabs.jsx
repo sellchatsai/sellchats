@@ -23,10 +23,10 @@ const TopTabs = () => {
       );
 
       if (res.data.hasKnowledge) {
-        navigate("/builder/train");
+        navigate(`/builder/train/${userId}`);
       } else {
         alert("⚠️ Please upload FILE, LINK or add Q&A first.");
-        navigate("/dashboard/knowledge");
+        navigate(`/dashboard/knowledge/${userId}`);
       }
 
     } catch (err) {

@@ -87,8 +87,6 @@ export const getPersona = async (req, res) => {
   try {
     const { userId } = req.params;
 
-    console.log("🔍 Fetch persona for userId:", userId);
-
     const persona = await AIPersona.findOne({ userId });
 
     return res.json({

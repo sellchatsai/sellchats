@@ -3,10 +3,13 @@ import { FiUser, FiBookOpen, FiMessageSquare } from "react-icons/fi";
 import "./dashboard.css";
 import { FiSettings } from "react-icons/fi";
 
-
 const Sidebar = ({ open, setOpen }) => {
   const location = useLocation();
   const navigate = useNavigate();
+
+  const storedUser = JSON.parse(localStorage.getItem("user"));
+  const userId =
+    storedUser?._id || storedUser?.id || storedUser?.userId;
 
   const isActive = (path) => location.pathname.startsWith(path);
 
@@ -27,8 +30,9 @@ const Sidebar = ({ open, setOpen }) => {
   return (
     <aside className={`sidebar ${open ? "open" : ""}`}>
 
+      {/* AI PERSONA */}
       <div
-        onClick={() => handleNavigate("/dashboard/persona")}
+        onClick={() => handleNavigate(`/dashboard/persona/${userId}`)}
         className={`side-item ${isActive("/dashboard/persona") ? "active" : ""}`}
       >
         <FiUser className="icon" />
@@ -40,8 +44,9 @@ const Sidebar = ({ open, setOpen }) => {
         </div>
       </div>
 
+      {/* KNOWLEDGE BASE */}
       <div
-        onClick={() => handleNavigate("/dashboard/knowledge")}
+        onClick={() => handleNavigate(`/dashboard/knowledge/${userId}`)}
         className={`side-item ${isActive("/dashboard/knowledge") ? "active" : ""}`}
       >
         <FiBookOpen className="icon" />
@@ -53,13 +58,10 @@ const Sidebar = ({ open, setOpen }) => {
         </div>
       </div>
 
+      {/* TEACH YOUR AGENT */}
       <div
         onClick={async () => {
           try {
-            const storedUser = JSON.parse(localStorage.getItem("user"));
-            const userId =
-              storedUser?._id || storedUser?.id || storedUser?.userId;
-
             const res = await fetch(
               `http://localhost:4000/api/chatbot/${userId}`
             );
@@ -72,8 +74,7 @@ const Sidebar = ({ open, setOpen }) => {
             }
 
             // ✅ ALLOW
-            handleNavigate("/dashboard/teach");
-
+            handleNavigate(`/dashboard/teach/${userId}`);
           } catch (err) {
             console.error(err);
             alert("Something went wrong");
@@ -90,10 +91,10 @@ const Sidebar = ({ open, setOpen }) => {
         </div>
       </div>
 
-
+      {/* SETTINGS */}
       <div
-        onClick={() => handleNavigate("/settings")}
-        className={`side-item ${isActive("/dashboard/settings") ? "active" : ""}`}
+        onClick={() => handleNavigate(`/settings/account/${userId}`)}
+        className={`side-item ${isActive("/settings") ? "active" : ""}`}
         style={{ marginTop: "auto" }}
       >
         <FiSettings className="icon" />
@@ -102,7 +103,6 @@ const Sidebar = ({ open, setOpen }) => {
           <span className="sidebar-subtitle">Account & Preferences</span>
         </div>
       </div>
-
 
     </aside>
   );

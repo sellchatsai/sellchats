@@ -14,7 +14,7 @@ export default function About() {
             const timer = setTimeout(() => {
                 setDisplayText((prev) => prev + text[index]);
                 setIndex(index + 1);
-            }, 45);
+            }, 25);
             return () => clearTimeout(timer);
         }
     }, [index, text]);
@@ -31,9 +31,9 @@ export default function About() {
                         <span className="cursor">|</span>
                     </div>
 
-                    <h1>About Us</h1>
+                    <h1 className="fade-up">About Us</h1>
 
-                    <p className="about-desc">
+                    <p className="about-desc fade-up delay-1">
                         <strong>SellChats</strong> is an AI-powered conversational platform built to
                         help businesses automate customer support and engagement effortlessly.
                         <br /><br />

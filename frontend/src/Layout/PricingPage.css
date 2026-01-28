@@ -39,13 +39,21 @@
     position: relative;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
     border: 2px solid #5550FF;
+
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
+
+.pricing-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 20px 50px rgba(85, 80, 255, 0.25);
+}
+
 
 /* POPULAR BADGE */
 .popular-badge {
     position: absolute;
     top: -14px;
-    left: 50%;
+    left: 32%;
     transform: translateX(-50%);
     background: var(--green-main);
     color: #fff;
@@ -53,6 +61,20 @@
     padding: 6px 14px;
     border-radius: 20px;
     font-weight: 600;
+
+    animation: popIn 0.6s ease-out 0.4s both;
+}
+
+@keyframes popIn {
+    0% {
+        transform: translateX(-50%) scale(0.8);
+        opacity: 0;
+    }
+
+    100% {
+        transform: translateX(-50%) scale(1);
+        opacity: 1;
+    }
 }
 
 /* PLAN */
@@ -118,7 +140,43 @@
     padding: 10px 0;
     font-size: 14px;
     border-bottom: 1px solid #eee;
+
+    opacity: 0;
+    transform: translateX(-10px);
+    animation: slideIn 0.5s ease forwards;
 }
+
+.features-pricing li:nth-child(1) {
+    animation-delay: 0.2s;
+}
+
+.features-pricing li:nth-child(2) {
+    animation-delay: 0.3s;
+}
+
+.features-pricing li:nth-child(3) {
+    animation-delay: 0.4s;
+}
+
+.features-pricing li:nth-child(4) {
+    animation-delay: 0.5s;
+}
+
+.features-pricing li:nth-child(5) {
+    animation-delay: 0.6s;
+}
+
+.features-pricing li:nth-child(6) {
+    animation-delay: 0.7s;
+}
+
+@keyframes slideIn {
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
 
 /* MOBILE */
 @media (max-width: 768px) {
@@ -128,5 +186,25 @@
 
     .pricing-card {
         width: 100%;
+    }
+}
+
+
+/* ================= ANIMATIONS ================= */
+
+.fade-up {
+    opacity: 0;
+    transform: translateY(40px);
+    animation: fadeUp 0.8s ease-out forwards;
+}
+
+.delay-1 {
+    animation-delay: 0.2s;
+}
+
+@keyframes fadeUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
     }
 }

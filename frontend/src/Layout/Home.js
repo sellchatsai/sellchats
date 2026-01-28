@@ -6,6 +6,7 @@ import "./Home.css";
 import "../index.css";
 import useScrollAnimation from "../hooks/useScrollAnimation";
 import chatUI from "../image/home-main-image.svg";
+import heroGif from "../image/_2.gif";
 import googleIcon from "../image/google.png";
 import companiesDesktop from "../image/companies-desktop.png";
 import companiesMobile from "../image/companies-mobile.png";
@@ -330,11 +331,21 @@ export default function Home() {
 
           {/* RIGHT IMAGE */}
           <div className="hero-right fade-right">
-            <img
-              src={chatUI}
-              alt="AI Chat UI"
-              className="hero-image"
-            />
+            <div className="hero-image-wrapper">
+              {/* MAIN IMAGE */}
+              <img
+                src={chatUI}
+                alt="AI Chat UI"
+                className="hero-image"
+              />
+
+              {/* GIF OVERLAY */}
+              <img
+                src={heroGif}
+                alt="Animated UI"
+                className="hero-gif"
+              />
+            </div>
           </div>
 
         </div>
@@ -545,7 +556,7 @@ export default function Home() {
         <div className="">
 
           {/* HEADER */}
-          <div className="testimonials-header animate fade-up">
+          <div className="container testimonials-header animate fade-up">
             <h2>Join our AI-delighted customers</h2>
 
             <div className="testimonials-meta">
