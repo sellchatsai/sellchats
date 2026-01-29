@@ -6,7 +6,7 @@ import "./Home.css";
 import "../index.css";
 import useScrollAnimation from "../hooks/useScrollAnimation";
 import chatUI from "../image/home-main-image.svg";
-import heroGif from "../image/_2.gif";
+import chatbotIcon from "../image/b-image-03.svg";
 import googleIcon from "../image/google.png";
 import companiesDesktop from "../image/companies-desktop.png";
 import companiesMobile from "../image/companies-mobile.png";
@@ -208,9 +208,47 @@ function FAQItem({ item, isOpen, onClick }) {
   );
 }
 
-
+const CHAT_STEPS = [
+  {
+    type: "user",
+    text: "Hi! What can I order from here?"
+  },
+  {
+    type: "bot",
+    text: "Hello! 🍕 This pizzeria offers a variety of pizzas, pastas, salads, and desserts. You can order for delivery, takeaway, or dine in."
+  },
+  {
+    type: "user",
+    text: "That sounds great! Do you have vegetarian options?"
+  },
+  {
+    type: "bot",
+    text: "Yes, absolutely! 🥦 We offer vegetarian pizzas, pastas with seasonal veggies, and fresh salads."
+  },
+  {
+    type: "user",
+    text: "Nice! What's your most popular pizza?"
+  },
+  {
+    type: "bot",
+    text: "Our best-seller is the Margherita Pizza 🍅🧀 — simple, fresh, and delicious."
+  }
+];
 
 export default function Home() {
+
+
+  const hasStartedRef = useRef(false);
+  const [messages, setMessages] = useState([]);
+  const [currentStep, setCurrentStep] = useState(0);
+
+  const [typingUser, setTypingUser] = useState("");
+  const [isBotTyping, setIsBotTyping] = useState(false);
+
+  const chatBodyRef = useRef(null);
+  const bottomRef = useRef(null);
+
+
 
   // const navigate = useNavigate();
 
@@ -239,6 +277,92 @@ export default function Home() {
     return () => observer.disconnect();
   }, []);
 
+
+  useEffect(() => {
+
+    // 🛑 React 18 StrictMode double-run fix
+    if (hasStartedRef.current && currentStep === 0) return;
+    hasStartedRef.current = true;
+
+    if (currentStep >= CHAT_STEPS.length) return;
+
+    const step = CHAT_STEPS[currentStep];
+
+    const runStep = async () => {
+
+      /* ======================
+         USER MESSAGE (TYPING)
+      ====================== */
+      if (step.type === "user") {
+
+        let i = 0;
+        setTypingUser("");
+
+        await new Promise((resolve) => {
+          const interval = setInterval(() => {
+            setTypingUser((prev) => prev + step.text[i]);
+            i++;
+
+            if (i === step.text.length) {
+              clearInterval(interval);
+              resolve();
+            }
+          }, 35); // typing speed
+        });
+
+        // Add final user message
+        setMessages((prev) => [...prev, step]);
+        setTypingUser("");
+
+        // wait animation complete
+        await new Promise((r) => setTimeout(r, 500));
+
+        // keep only last user message
+        setMessages((prev) => prev.slice(-1));
+
+        setCurrentStep((s) => s + 1);
+      }
+
+      /* ======================
+         BOT MESSAGE
+      ====================== */
+      if (step.type === "bot") {
+
+        setIsBotTyping(true);
+
+        // thinking dots delay
+        await new Promise((r) => setTimeout(r, 900));
+
+        setIsBotTyping(false);
+
+        // show bot answer
+        setMessages((prev) => [...prev, step]);
+
+        // wait slide-in animation
+        await new Promise((r) => setTimeout(r, 600));
+
+        // keep only user + bot
+        setMessages((prev) => prev.slice(-2));
+
+        setCurrentStep((s) => s + 1);
+      }
+    };
+
+    runStep();
+
+  }, [currentStep]);
+
+
+
+
+  useEffect(() => {
+    if (!bottomRef.current) return;
+
+    bottomRef.current.scrollIntoView({
+      behavior: "smooth",
+      block: "end",
+    });
+  }, [messages, typingUser, isBotTyping]);
 
 
 
@@ -330,23 +454,60 @@ export default function Home() {
           </div>
 
           {/* RIGHT IMAGE */}
+          {/* RIGHT IMAGE */}
           <div className="hero-right fade-right">
             <div className="hero-image-wrapper">
-              {/* MAIN IMAGE */}
+
+              {/* BACKGROUND IMAGE */}
               <img
                 src={chatUI}
                 alt="AI Chat UI"
                 className="hero-image"
               />
 
-              {/* GIF OVERLAY */}
-              <img
-                src={heroGif}
-                alt="Animated UI"
-                className="hero-gif"
-              />
+
+              {/* CHATBOT */}
+              <div className="hero-chatbot">
+                <div className="hero-chatbot-header">
+                  <img src={chatbotIcon} alt="AI" />
+                  <span>AI Assistant</span>
+                </div>
+
+                <div className="hero-chatbot-body" ref={chatBodyRef}>
+                  {/* RENDERED MESSAGES */}
+                  {messages.map((msg, i) => (
+                    <div key={i} className={`chat-msg ${msg.type}`}>
+                      {msg.text}
+                      {msg.type === "bot" && (
+                        <div className="chat-label">Noupe AI Answered</div>
+                      )}
+                    </div>
+                  ))}
+
+                  {/* USER TYPING */}
+                  {typingUser && (
+                    <div className="chat-msg user typing">
+                      {typingUser}
+                      <span className="cursor">|</span>
+                    </div>
+                  )}
+
+                  {/* BOT THINKING */}
+                  {isBotTyping && (
+                    <div className="chat-msg bot thinking">
+                      <span className="dot"></span>
+                      <span className="dot"></span>
+                      <span className="dot"></span>
+                    </div>
+                  )}
+
+                  <div ref={bottomRef} />
+                </div>
+              </div>
+
             </div>
           </div>
+
 
         </div>
       </section>
