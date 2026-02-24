@@ -120,7 +120,7 @@
 
 /* SAVE BUTTON */
 .fu-save-btn {
-  background: linear-gradient(80deg, #5550FF, #3C4984);
+  background: var(--secondary-color);
   color: white;
   font-size: 18px;
   border: none;

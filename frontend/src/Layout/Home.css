@@ -32,7 +32,7 @@
     width: 18rem;
     height: 22rem;
 
-    background: linear-gradient(#000000 11%, rgba(255, 255, 255, 0) 67%);
+    background: linear-gradient(#434ba7 11%, rgba(255, 255, 255, 0) 67%);
     border-radius: 18px;
 
     display: flex;
@@ -63,7 +63,7 @@
 .hero-chatbot-header {
     pointer-events: auto;
     height: 46px;
-    background: #000;
+    background: #434ba7;
     color: #fff;
 
     display: flex;
@@ -117,18 +117,45 @@
     position: relative;
     flex-shrink: 0;
 
-    animation: msgIn 0.35s ease;
 }
 
-@keyframes msgIn {
+/* =========================
+   CHAT ENTRY ANIMATIONS
+========================= */
+
+/* USER – right side normal */
+.chat-msg.user {
+    animation: userSlide 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* BOT – right to left */
+.chat-msg.bot {
+    animation: botSlide 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* USER animation */
+@keyframes userSlide {
     from {
         opacity: 0;
-        transform: translateY(10px);
+        transform: translateX(40px);
     }
 
     to {
         opacity: 1;
-        transform: translateY(0);
+        transform: translateX(0);
+    }
+}
+
+/* BOT animation (RIGHT ➜ LEFT) */
+@keyframes botSlide {
+    from {
+        opacity: 0;
+        transform: translateX(80px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
     }
 }
 
@@ -1920,4 +1947,270 @@
     .features .feature-content.animate {
         transform: translateY(40px);
     }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* =========================
+   BASE STATE
+========================= */
+
+.reveal-left,
+.reveal-right,
+.reveal-up {
+    opacity: 0;
+    transition: all 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Directions */
+
+.reveal-left {
+    transform: translateX(-120px);
+}
+
+.reveal-right {
+    transform: translateX(120px);
+}
+
+.reveal-up {
+    transform: translateY(80px);
+}
+
+/* Active State */
+
+.reveal-active {
+    opacity: 1;
+    transform: translate(0, 0);
+}
+
+
+
+/* =========================
+   WHY SECTION ANIMATION
+========================= */
+
+.animate-fade-up,
+.animate-left,
+.animate-right {
+    opacity: 0;
+    transition: all 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.animate-fade-up {
+    transform: translateY(50px);
+}
+
+.animate-left {
+    transform: translateX(-80px);
+}
+
+.animate-right {
+    transform: translateX(80px);
+}
+
+.animate-active {
+    opacity: 1;
+    transform: translate(0);
+}
+
+/* Stagger Effect */
+.why-pill {
+    transition-delay: 0.2s;
+}
+
+.why-pill:nth-child(2) {
+    transition-delay: 0.4s;
+}
+
+.why-pill:nth-child(3) {
+    transition-delay: 0.6s;
+}
+
+.why-pill:nth-child(4) {
+    transition-delay: 0.8s;
+}
+
+
+
+/* =========================
+   FAQ SECTION ANIMATION
+========================= */
+
+.animate-fade-up {
+    opacity: 0;
+    transform: translateY(60px);
+    transition: all 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.animate-active {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Stagger effect for FAQ items */
+.faq-item:nth-child(1) {
+    transition-delay: 0.2s;
+}
+
+.faq-item:nth-child(2) {
+    transition-delay: 0.4s;
+}
+
+.faq-item:nth-child(3) {
+    transition-delay: 0.6s;
+}
+
+.faq-item:nth-child(4) {
+    transition-delay: 0.8s;
+}
+
+.faq-item:nth-child(5) {
+    transition-delay: 1s;
+}
+
+
+
+/* LEFT SIDE ANIMATION */
+.animate-left {
+    opacity: 0;
+    transform: translateX(-60px);
+    animation: slideFadeLeft 1s ease forwards;
+    animation-delay: 0.2s;
+}
+
+@keyframes slideFadeLeft {
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+
+/* =================================
+   WHY LOVE – REVEAL SYSTEM
+================================= */
+
+/* Base hidden state */
+.why-love .reveal-left,
+.why-love .reveal-right,
+.why-love .reveal-up {
+    opacity: 0;
+    transition: all 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Directions */
+.why-love .reveal-left {
+    transform: translateX(-120px);
+}
+
+.why-love .reveal-right {
+    transform: translateX(120px);
+}
+
+.why-love .reveal-up {
+    transform: translateY(60px);
+}
+
+/* Active */
+.why-love .reveal-active {
+    opacity: 1;
+    transform: translate(0, 0);
+}
+
+/* Stagger */
+.why-love .why-pill:nth-child(1) {
+    transition-delay: 0.05s;
+}
+
+.why-love .why-pill:nth-child(2) {
+    transition-delay: 0.15s;
+}
+
+.why-love .why-pill:nth-child(3) {
+    transition-delay: 0.25s;
+}
+
+.why-love .why-pill:nth-child(4) {
+    transition-delay: 0.35s;
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+
+    .why-love .reveal-left,
+    .why-love .reveal-right {
+        transform: translateY(40px);
+    }
+}
+
+/* =================================
+   CTA TRIAL – REVEAL SYSTEM
+================================= */
+
+.cta-trial .reveal-up {
+    opacity: 0;
+    transform: translateY(60px);
+    transition: all 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.cta-trial .reveal-active {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Stagger effect */
+.cta-trial .cta-form {
+    transition-delay: 0.15s;
+}
+
+.cta-trial .cta-points {
+    transition-delay: 0.3s;
+}
+
+
+/* =================================
+   FAQ – REVEAL SYSTEM
+================================= */
+
+.faq-section .reveal-up {
+    opacity: 0;
+    transform: translateY(60px);
+    transition: all 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.faq-section .reveal-active {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Stagger */
+.faq-section .faq-wrapper {
+    transition-delay: 0.2s;
+}
+
+/* =================================
+   TOOLS LEFT ANIMATION
+================================= */
+
+.tools-section .reveal-left {
+    opacity: 0;
+    transform: translateX(-120px);
+    transition: all 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.tools-section .reveal-active {
+    opacity: 1;
+    transform: translateX(0);
 }

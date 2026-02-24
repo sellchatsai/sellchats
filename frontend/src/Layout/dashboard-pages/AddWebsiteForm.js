@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
 import "./AddWebsite.css";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom"; // ✅ added useParams
 import "./train-page.css";
 
 const AddWebsiteForm = ({ user }) => {
   const navigate = useNavigate();
+  const { userId: routeUserId } = useParams(); // ✅ route param support
 
   const [url, setUrl] = useState("");
   const [storedWebsite, setStoredWebsite] = useState(null);
@@ -15,15 +16,29 @@ const AddWebsiteForm = ({ user }) => {
   const [popupLoading, setPopupLoading] = useState(false);
   const [popupMsg, setPopupMsg] = useState("");
 
+  // 🔹 original userId logic (NO REMOVE)
+  const propUserId = user?._id || user?.id || user?.userId;
 
-  const userId = user?._id || user?.id || user?.userId;
+  // 🔹 fallback localStorage
+  let storedUserId = null;
+  try {
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      const parsed = JSON.parse(storedUser);
+      storedUserId =
+        parsed?._id || parsed?.id || parsed?.userId;
+    }
+  } catch {}
+
+  // ✅ final userId (priority: route > prop > localStorage)
+  const finalUserId = routeUserId || propUserId || storedUserId;
 
   /* ================= LOAD FROM DB ================= */
   useEffect(() => {
-    if (!userId) return;
+    if (!finalUserId) return;
 
     axios
-      .get(`http://localhost:4000/api/chatbot/${userId}`)
+      .get(`http://localhost:4000/api/chatbot/${finalUserId}`)
       .then((res) => {
         const website = res.data?.settings?.website;
         if (website) {
@@ -31,8 +46,8 @@ const AddWebsiteForm = ({ user }) => {
           setUrl(website);
         }
       })
-      .catch(() => { });
-  }, [userId]);
+      .catch(() => {});
+  }, [finalUserId]);
 
   /* ================= CRAWL WEBSITE ================= */
   const handleCrawl = async () => {
@@ -50,12 +65,11 @@ const AddWebsiteForm = ({ user }) => {
       await axios.post(
         "http://localhost:4000/api/webhook/ingest-website",
         {
-          userId,
+          userId: finalUserId,
           source: url.trim(),
         }
       );
 
-      // ⏳ same FileUpload jevu delay
       setTimeout(() => {
         setPopupLoading(false);
         setPopupMsg("✅ Website uploaded. Training started.");
@@ -72,13 +86,12 @@ const AddWebsiteForm = ({ user }) => {
     }
   };
 
-
   return (
     <div className="persona-container">
       <div className="link-header-row persona-header">
         <button
           className="fu-back-btn"
-          onClick={() => navigate("/dashboard/knowledge")}
+          onClick={() => navigate(`/dashboard/knowledge/${finalUserId}`)} // ✅ fixed
         >
           ←
         </button>
@@ -93,7 +106,6 @@ const AddWebsiteForm = ({ user }) => {
         <label className="label-text">Enter a URL</label>
         <p className="help-text">Provide a URL for your agent to analyze</p>
 
-        {/* 🔒 INPUT LOCK */}
         <input
           type="text"
           className="link-input"
@@ -108,7 +120,6 @@ const AddWebsiteForm = ({ user }) => {
           </p>
         )}
 
-        {/* 🔒 BUTTON LOCK */}
         <button
           className="crawl-btn"
           onClick={handleCrawl}
@@ -121,13 +132,10 @@ const AddWebsiteForm = ({ user }) => {
           {popupLoading ? "Uploading..." : "Upload"}
         </button>
 
-
-
         {error && <p className="error-msg">{error}</p>}
         {success && <p className="success-msg">{success}</p>}
       </div>
 
-      {/* ================= POPUP ================= */}
       {showPopup && (
         <div className="popup-overlay">
           <div className="popup-box">
@@ -150,7 +158,6 @@ const AddWebsiteForm = ({ user }) => {
           </div>
         </div>
       )}
-
     </div>
   );
 };

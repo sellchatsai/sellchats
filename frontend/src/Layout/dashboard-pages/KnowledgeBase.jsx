@@ -1,19 +1,19 @@
 import React from "react";
 import "./KnowledgeBase.css";
 import "./train-page.css";
-// import { FiFileText } from "react-icons/fi";
+import { useNavigate, useOutletContext, useParams } from "react-router-dom";
 import { FaLink, FaQuestionCircle } from "react-icons/fa";
 import { AiOutlineFolderOpen } from "react-icons/ai";
-import { useNavigate } from "react-router-dom";
 import aiIcon from "../../image/KNOWLEDGE BASE.svg";
 import {
   FiArrowLeft,
 } from "react-icons/fi";
-import { useOutletContext } from "react-router-dom";
+
 
 const KnowledgeBase = () => {
   const navigate = useNavigate();
   const { setSidebarOpen } = useOutletContext();
+  const { userId } = useParams();
 
   return (
     <div className="persona-container">
@@ -34,7 +34,7 @@ const KnowledgeBase = () => {
 
         <div>
           <h2>KNOWLEDGE BASE</h2>
-          <p>Train your Agent for context-aware responses to ensure accurate replies</p>
+          <p>Train your agent for context-aware responses to ensure accurate replies</p>
         </div>
       </div>
 
@@ -45,7 +45,7 @@ const KnowledgeBase = () => {
       {/* FILE CARD */}
       <div
         className="kb-card"
-        onClick={() => navigate("/dashboard/knowledge/file")}
+        onClick={() => navigate(`/dashboard/knowledge/file/${userId}`)}
         style={{ cursor: "pointer" }}
       >
         <div className="kb-icon blue"><AiOutlineFolderOpen /></div>
@@ -59,7 +59,7 @@ const KnowledgeBase = () => {
       {/* LINK CARD */}
       <div
         className="kb-card"
-        onClick={() => navigate("/dashboard/knowledge/add-website")}
+        onClick={() => navigate(`/dashboard/knowledge/add-website/${userId}`)}
         style={{ cursor: "pointer" }}
       >
         <div className="kb-icon yellow"><FaLink /></div>
@@ -73,7 +73,7 @@ const KnowledgeBase = () => {
       {/* Q&A CARD — FIXED */}
       <div
         className="kb-card"
-        onClick={() => navigate("/dashboard/knowledge/qa")}
+        onClick={() => navigate(`/dashboard/knowledge/qa/${userId}`)}
         style={{ cursor: "pointer" }}
       >
         <div className="kb-icon purple"><FaQuestionCircle /></div>

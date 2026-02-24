@@ -14,12 +14,12 @@ const TeachAgent = ({ user }) => {
   const { setSidebarOpen } = useOutletContext();
   const navigate = useNavigate();
 
+
   /* ======================
      REFS
   ====================== */
   const typingIntervalRef = useRef(null);
   const bottomRef = useRef(null);
-  const userNameRef = useRef("User");
 
   /* ======================
      STATES
@@ -37,6 +37,19 @@ const TeachAgent = ({ user }) => {
   const [leadId, setLeadId] = useState(null);
 
   const [checkingWebsite, setCheckingWebsite] = useState(true);
+
+  const [labels, setLabels] = useState([]);
+  const [welcomeDone, setWelcomeDone] = useState(false);
+
+  useEffect(() => {
+    if (!userId) return;
+
+    axios
+      .get(`${apiBase}/api/qa/labels/${userId}`)
+      .then((res) => setLabels(res.data || []))
+      .catch(() => setLabels([]));
+  }, [userId]);
+
 
   /* ======================
      WEBSITE CHECK
@@ -94,20 +107,14 @@ const TeachAgent = ({ user }) => {
   /* ======================
      GREETING (MUST BE ABOVE useEffect)
   ====================== */
-  const startGreeting = useCallback(
-    (name) => {
-      const msg = `Hi ${name} 👋 I'm your assistant!`;
-      setThinking(true);
+  const startGreeting = useCallback((name) => {
+    const msg = `Hi ${name} 👋 I'm your assistant!`;
 
-      setTimeout(() => {
-        setThinking(false);
-        typeWriterEffect(msg, () => {
-          setMessages([{ sender: "bot", text: msg }]);
-        });
-      }, 400);
-    },
-    [] // safe
-  );
+    typeWriterEffect(msg, () => {
+      setMessages([{ sender: "bot", text: msg }]);
+      setWelcomeDone(true);   // 🔥 important
+    });
+  }, []);
 
   /* ======================
      LOAD LEAD FROM LOCAL
@@ -118,9 +125,14 @@ const TeachAgent = ({ user }) => {
 
     if (storedLeadId && storedLeadName) {
       setLeadId(storedLeadId);
-      userNameRef.current = storedLeadName;
       setShowLeadForm(false);
       startGreeting(storedLeadName);
+    } else {
+      const msg = "Hi there 👋 I'm your assistant!";
+      typeWriterEffect(msg, () => {
+        setMessages([{ sender: "bot", text: msg }]);
+        setWelcomeDone(true);
+      });
     }
   }, [startGreeting]);
 
@@ -201,12 +213,56 @@ const TeachAgent = ({ user }) => {
       <div className="chat-wrapper">
         <div className="chat-area">
 
-          {/* LEAD FORM */}
+          {/* MESSAGES (Greeting first) */}
+          {messages.map((m, i) => (
+            <div key={i} className="chat-row">
+              {m.sender === "bot" && (
+                <img src={BotAvatar} className="msg-avatar" alt="bot" />
+              )}
+              <div className={`msg-bubble ${m.sender}-msg`}>
+                {m.text}
+              </div>
+            </div>
+          ))}
+
+          {/* TYPEWRITING EFFECT */}
+          {isTypewriting && (
+            <div className="chat-row">
+              <img src={BotAvatar} className="msg-avatar" alt="bot" />
+              <div className="msg-bubble bot-msg">{typingText}</div>
+            </div>
+          )}
+
+          {/* Q&A CHIPS */}
+          {welcomeDone && labels.length > 0 && (
+            <div className="chatbot-labels">
+              {labels.map((item, i) => (
+                <button
+                  key={i}
+                  className={`label-chip ${showLeadForm ? "disabled" : ""}`}
+                  disabled={showLeadForm}
+                  onClick={() => {
+                    if (showLeadForm || thinking || isTypewriting) return;
+
+                    setMessages((prev) => [
+                      ...prev,
+                      { sender: "user", text: item.question || item.label },
+                      { sender: "bot", text: item.answer },
+                    ]);
+                  }}
+                >
+                  {item.label}
+                </button>
+              ))}
+            </div>
+          )}
+
+          {/* 🔥 MOVE LEAD FORM HERE (AFTER CHIPS) */}
           {showLeadForm && (
             <div className="chat-row">
               <img src={BotAvatar} className="msg-avatar" alt="bot" />
 
-              <div className="lead-chat-bubble">
+              <div className="lead-chat-bubble-teach">
                 <p>Let's chat! Fill in a few details to get started.</p>
 
                 <input
@@ -238,40 +294,25 @@ const TeachAgent = ({ user }) => {
                     const id = res.data.chatUserId;
 
                     localStorage.setItem("teachAgentLeadId", id);
-                    localStorage.setItem(
-                      "teachAgentLeadName",
-                      leadName
-                    );
+                    localStorage.setItem("teachAgentLeadName", leadName);
 
                     setLeadId(id);
-                    userNameRef.current = leadName;
                     setShowLeadForm(false);
-                    startGreeting(leadName);
+
+                    setMessages((prev) => [
+                      ...prev,
+                      {
+                        sender: "bot",
+                        text: `Thank you ${leadName}! How can I help you today?`,
+                      },
+                    ]);
+
+                    setWelcomeDone(true);
                   }}
                 >
                   Start the chat
                 </button>
               </div>
-            </div>
-          )}
-
-          {/* MESSAGES */}
-          {!showLeadForm &&
-            messages.map((m, i) => (
-              <div key={i} className="chat-row">
-                {m.sender === "bot" && (
-                  <img src={BotAvatar} className="msg-avatar" alt="bot" />
-                )}
-                <div className={`msg-bubble ${m.sender}-msg`}>
-                  {m.text}
-                </div>
-              </div>
-            ))}
-
-          {isTypewriting && (
-            <div className="chat-row">
-              <img src={BotAvatar} className="msg-avatar" alt="bot" />
-              <div className="msg-bubble bot-msg">{typingText}</div>
             </div>
           )}
 

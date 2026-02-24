@@ -1,5 +1,6 @@
 :root {
   --header-height: 100px;
+  --header-top-height: 70px;
   --sidebar-width: 19.875rem;
   --white: #ffff;
   --black: #000;
@@ -144,5 +145,28 @@
   .side-item {
     margin: 20px 0;
     padding: 25px 20px;
+  }
+}
+
+
+
+/* ================= LEFT SLIDE ANIMATION ================= */
+
+.side-item {
+  opacity: 0;
+  transform: translateX(-40px);
+  animation: slideFromLeft 0.5s ease forwards;
+}
+
+/* Stagger delay (one by one effect) */
+.side-item:nth-child(1) { animation-delay: 0.1s; }
+.side-item:nth-child(2) { animation-delay: 0.2s; }
+.side-item:nth-child(3) { animation-delay: 0.3s; }
+.side-item:nth-child(4) { animation-delay: 0.4s; }
+
+@keyframes slideFromLeft {
+  to {
+    opacity: 1;
+    transform: translateX(0);
   }
 }

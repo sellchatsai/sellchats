@@ -54,8 +54,8 @@
   overflow-y: auto;
   display: flex;
   flex-direction: column;
-  gap: 18px;
-  padding: 10px 4px 20px;
+  padding: 20px 12px 30px;
+  background: #f5f6fc;
 }
 
 /* ===============================
@@ -79,19 +79,18 @@
 .msg-bubble {
   max-width: 70%;
   padding: 14px 18px;
-  border-radius: 16px;
-  font-size: 15px;
+  border-radius: 0px 10px 10px 10px !important;
+  background: #d8dbea !important;
+  border: none !important;
+  font-size: 14.5px;
   line-height: 1.5;
   word-break: break-word;
+  transition: all 0.2s ease;
 }
 
-.bot-msg {
-  background: #fff;
-  border: 1px solid #e8e8ff;
-}
 
 .user-msg {
-  background: #3b82f6;
+  background: linear-gradient(135deg, #667eeb, #5a67ff);
   color: #fff;
   margin-left: auto;
 }
@@ -257,22 +256,22 @@
 
 
 /* === LEAD FORM BUBBLE === */
-.lead-chat-bubble {
-  background: #f6f7fb;
-  border-radius: 18px;
-  padding: 18px;
+.lead-chat-bubble-teach {
+  background: #d8dbea;
+  padding: 20px;
   width: 100%;
-  max-width: 320px;
-  box-shadow: 0 6px 20px rgba(0,0,0,0.06);
+  max-width: 340px !important;
+  border-radius: 0px 14px 14px 14px;
+  animation: fadeInUp 0.4s ease forwards;
 }
 
-.lead-chat-bubble p {
+.lead-chat-bubble-teach p {
   margin-bottom: 12px;
   font-size: 14px;
   color: #333;
 }
 
-.lead-chat-bubble input {
+.lead-chat-bubble-teach input {
   width: 100%;
   padding: 12px 14px;
   margin-bottom: 10px;
@@ -282,7 +281,7 @@
   outline: none;
 }
 
-.lead-chat-bubble input:focus {
+.lead-chat-bubble-teach input:focus {
   border-color: #667eeb;
 }
 
@@ -300,4 +299,34 @@
 
 .lead-start-btn:hover {
   background: #556de0;
+}
+
+.chatbot-labels {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-left: 52px;
+  animation: fadeIn 0.4s ease forwards;
+}
+
+.label-chip {
+  padding: 7px 16px;
+  border-radius: 30px;
+  border: 1.5px solid #667eeb !important;
+  background: #fff;
+  color: #000;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.label-chip:hover:not(:disabled) {
+  background: #667eeb;
+  color: #fff;
+  transform: translateY(-2px);
+}
+
+.label-chip:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }

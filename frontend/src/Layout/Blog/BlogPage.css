@@ -190,3 +190,35 @@
     display: inline-block;
   }
 }
+
+
+/* =========================
+   BLOG ANIMATION
+========================= */
+
+.animate {
+  opacity: 0;
+  transition: all 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.fade-up {
+  transform: translateY(60px);
+}
+
+.fade-down {
+  transform: translateY(-60px);
+}
+
+.animate-active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Stagger Delay */
+.delay-0 { transition-delay: 0.1s; }
+.delay-1 { transition-delay: 0.2s; }
+.delay-2 { transition-delay: 0.3s; }
+.delay-3 { transition-delay: 0.4s; }
+.delay-4 { transition-delay: 0.5s; }
+.delay-5 { transition-delay: 0.6s; }
+.delay-6 { transition-delay: 0.7s; }

@@ -7,9 +7,9 @@
 
 .admin-sidebar {
   width: var(--sidebar-width);
-  height: calc(100vh - var(--header-height));
+  height: calc(100vh - var(--header-top-height));
   position: fixed;
-  top: var(--header-height);
+  top: var(--header-top-height);
   left: 0;
   background: #1e293b;
   padding: 1.5rem 1rem;

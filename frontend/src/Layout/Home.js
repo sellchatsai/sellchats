@@ -4,7 +4,6 @@ import axios from "axios";
 import HomeHeader from "./HomeHeader";
 import "./Home.css";
 import "../index.css";
-import useScrollAnimation from "../hooks/useScrollAnimation";
 import chatUI from "../image/home-main-image.svg";
 import chatbotIcon from "../image/b-image-03.svg";
 import googleIcon from "../image/google.png";
@@ -66,7 +65,7 @@ const reviews = [
   },
   {
     title: "All-in-One Sales Booster",
-    text: "“The app is great!!! I can literally close sales on the go and handle Instagram and other channels all from ONE PLACE! It’s super reliable, easy to use, and really helps boost my conversions!”",
+    text: "“The app is great!!! I can literally close sales on the go and handle instagram and other channels all from ONE PLACE! It’s super reliable, easy to use, and really helps boost my conversions!”",
     name: "Daniel Wong",
     date: "@danw · Mar 2025",
     avatar: review04,
@@ -252,31 +251,6 @@ export default function Home() {
 
   // const navigate = useNavigate();
 
-  useEffect(() => {
-    if (!("IntersectionObserver" in window)) return;
-
-    const elements = document.querySelectorAll(".animate");
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add("show");
-            observer.unobserve(entry.target); // ✅ one-time animation
-          }
-        });
-      },
-      {
-        threshold: 0.1,
-        rootMargin: "0px 0px -80px 0px"
-      }
-    );
-
-    elements.forEach(el => observer.observe(el));
-
-    return () => observer.disconnect();
-  }, []);
-
 
   useEffect(() => {
 
@@ -356,14 +330,11 @@ export default function Home() {
 
 
   useEffect(() => {
-    if (!bottomRef.current) return;
+    if (!chatBodyRef.current) return;
 
-    bottomRef.current.scrollIntoView({
-      behavior: "smooth",
-      block: "end",
-    });
+    chatBodyRef.current.scrollTop =
+      chatBodyRef.current.scrollHeight;
   }, [messages, typingUser, isBotTyping]);
-
 
 
 
@@ -418,15 +389,61 @@ export default function Home() {
     return () => cancelAnimationFrame(rafId);
   }, []);
 
+  useEffect(() => {
+    if (!("IntersectionObserver" in window)) return;
 
-  useScrollAnimation();
+    const elements = document.querySelectorAll(".animate");
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("show");
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      {
+        threshold: 0.1,
+        rootMargin: "0px 0px -80px 0px"
+      }
+    );
+
+    elements.forEach(el => observer.observe(el));
+
+    return () => observer.disconnect();
+  }, []);
+
+
+  useEffect(() => {
+    const elements = document.querySelectorAll(
+      ".reveal-left, .reveal-right, .reveal-up"
+    );
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("reveal-active");
+          }
+        });
+      },
+      {
+        threshold: 0.2,
+      }
+    );
+
+    elements.forEach((el) => observer.observe(el));
+
+    return () => observer.disconnect();
+  }, []);
 
   return (
     <>
       <HomeHeader />
 
       {/* HERO SECTION */}
-      <section className="hero">
+      <section className="hero animate">
         <div className="container hero-inner animate-group animate">
 
           {/* LEFT CONTENT */}
@@ -453,8 +470,6 @@ export default function Home() {
             </div>
           </div>
 
-          {/* RIGHT IMAGE */}
-          {/* RIGHT IMAGE */}
           <div className="hero-right fade-right">
             <div className="hero-image-wrapper">
 
@@ -541,15 +556,15 @@ export default function Home() {
         </div>
       </section>
 
-
       {/* =========================
     FEATURES SECTION
 ========================= */}
+
       <section className="features">
         <div className="container">
 
           {/* HEADER */}
-          <div className="features-header animate fade-up">
+          <div className="features-header reveal-up">
             <h2>
               <span>Key features that </span>power<span> your business</span>
             </h2>
@@ -561,28 +576,27 @@ export default function Home() {
 
           {/* 1 */}
           <div className="feature-row">
-            <div className="feature-media animate">
+            <div className="feature-media reveal-left">
               <img src={integrationsCard} alt="Integrations" />
             </div>
 
-            <div className="feature-content animate delay-1">
+            <div className="feature-content reveal-right">
               <img src={integrationsRow} alt="Integrations" className="feature-icons" />
               <h3>Instant setup, no coding required</h3>
               <p>
-                Grab your embed code and drop it into
-                your site. That's all SellChats needs to get to
-                work.
+                Grab your embed code and drop it into your site.
+                That's all SellChats needs to get to work.
               </p>
             </div>
           </div>
 
           {/* 2 */}
           <div className="feature-row reverse">
-            <div className="feature-media animate">
+            <div className="feature-media reveal-right">
               <img src={knowledgeImage} alt="Knowledge Base" />
             </div>
 
-            <div className="feature-content animate delay-1">
+            <div className="feature-content reveal-left">
               <h3>Knowledge Base</h3>
               <p>
                 Train SellChats with your own content. Add
@@ -594,43 +608,40 @@ export default function Home() {
 
           {/* 3 */}
           <div className="feature-row">
-            <div className="feature-media animate">
+            <div className="feature-media reveal-left">
               <img src={customizationImage} alt="Customization Options" />
             </div>
 
-            <div className="feature-content animate delay-1">
+            <div className="feature-content reveal-right">
               <h3>Customization Options</h3>
               <p>
                 Make See fit your site. Adjust size,
-                alignment, color and avatar for a seamless
-                look.
+                alignment, color and avatar for a seamless look.
               </p>
             </div>
           </div>
 
           {/* 4 */}
           <div className="feature-row reverse">
-            <div className="feature-media animate">
+            <div className="feature-media reveal-right">
               <img src={firstMessageImage} alt="First Message" />
             </div>
 
-            <div className="feature-content animate delay-1">
-              <h3>Knowledge Base</h3>
+            <div className="feature-content reveal-left">
+              <h3>First Message Automation</h3>
               <p>
-                Train ChatBot with your own content. Add
-                documents and Q&A so your SellChats can
-                answer with your knowledge.
+                Automatically greet visitors and start
+                conversations to boost engagement.
               </p>
             </div>
           </div>
 
           {/* 5 */}
           <div className="feature-row">
-            <div className="feature-media animate">
+            <div className="feature-media reveal-left">
               <img src={conversationImage} alt="Get conversations" />
             </div>
-
-            <div className="feature-content animate delay-1">
+            <div className="feature-content reveal-right">
               <h3>Get conversations</h3>
               <p>
                 Every conversation is sent to your inbox in
@@ -642,17 +653,17 @@ export default function Home() {
 
           {/* 6 */}
           <div className="feature-row reverse">
-            <div className="feature-media animate">
+            <div className="feature-media reveal-right">
               <img src={languageImage} alt="Multi-language support" />
             </div>
-
-            <div className="feature-content animate delay-1">
+            <div className="feature-content reveal-left">
               <h3>Multi-language support</h3>
               <p>
                 SellChats detects each visitor's language
                 and answers automatically.
               </p>
             </div>
+
           </div>
 
         </div>
@@ -661,44 +672,52 @@ export default function Home() {
 
 
 
+      {/* WHY LOVE SECTION */}
 
-      {/* WHY WILL LOVE CHATBOT */}
       <section className="why-love">
         <div className="container">
 
-          <div className="why-header animate fade-up">
-            <h2>Why will love SellChats</h2>
+          <div className="why-header reveal-up">
+            <h2>Why you'll love SellChats</h2>
             <p>
-              SellChats is the easiest way to deliver automated customer support using AI. Just enter
-              your website URL, and SellChats builds a chatbot that understands your business.
+              SellChats is the easiest way to deliver automated customer support using AI.
+              Just enter your website URL, and SellChats builds a chatbot that understands your business.
             </p>
           </div>
 
           <div className="why-list">
 
-            <div className="why-pill animate fade-left left">
+            <div className="why-pill left reveal-left">
               <div className="why-icon">
                 <img src={iconLaunch} alt="Launch fast" />
               </div>
-              <span className="why-icon-text">Launches in minutes — no code, no training</span>
+              <span className="why-icon-text">
+                Launches in minutes — no code, no training
+              </span>
             </div>
 
-            <div className="why-pill animate fade-right right">
-              <span className="why-icon-text">Works in every language, on any website</span>
+            <div className="why-pill right reveal-right">
+              <span className="why-icon-text">
+                Works in every language, on any website
+              </span>
               <div className="why-icon">
                 <img src={iconLanguage} alt="Languages" />
               </div>
             </div>
 
-            <div className="why-pill animate fade-left left">
+            <div className="why-pill left reveal-left">
               <div className="why-icon">
                 <img src={iconInbox} alt="Inbox" />
               </div>
-              <span className="why-icon-text">Sends conversations directly to your inbox</span>
+              <span className="why-icon-text">
+                Sends conversations directly to your inbox
+              </span>
             </div>
 
-            <div className="why-pill animate fade-right right">
-              <span className="why-icon-text">100% free </span>
+            <div className="why-pill right reveal-right">
+              <span className="why-icon-text">
+                100% free
+              </span>
               <div className="why-icon">
                 <img src={iconFree} alt="Free" />
               </div>
@@ -707,7 +726,6 @@ export default function Home() {
           </div>
         </div>
       </section>
-
 
 
       {/* =========================
@@ -802,12 +820,12 @@ export default function Home() {
       <section className="cta-trial">
         <div className="container">
 
-          <h2 className="cta-title animate fade-up">
-            Get a free SellChats trial  <br />
+          <h2 className="cta-title reveal-up">
+            Get a free SellChats trial <br />
             and become one of them
           </h2>
 
-          <div className="cta-form animate fade-up delay-1">
+          <div className="cta-form reveal-up">
             <input
               type="email"
               placeholder="Enter your business email"
@@ -815,10 +833,9 @@ export default function Home() {
             <button onClick={handleGoogleSignup}>
               Sign Up free
             </button>
-
           </div>
 
-          <div className="cta-points animate fade-up delay-2">
+          <div className="cta-points reveal-up">
             <span className="cta-point">
               <img src={checkIcon} alt="check" />
               Free 14-day trial
@@ -830,31 +847,35 @@ export default function Home() {
             </span>
           </div>
 
-
         </div>
       </section>
 
 
-      {/* ========        FAQ SECTION  ========== */}
+      {/* ======== FAQ SECTION ========== */}
       <section className="faq-section">
         <div className="container">
-          <h2 className="faq-title animate fade-up">
+
+          <h2 className="faq-title reveal-up">
             Frequently Asked Questions
           </h2>
 
-          <FAQAccordion />
+          <div className="faq-wrapper reveal-up">
+            <FAQAccordion />
+          </div>
+
         </div>
       </section>
 
 
       <section className="tools-section">
-        <h2 className="guarantee-title animate fade-up tools-label">
+        <h2 className="guarantee-title tools-label">
           Tools
         </h2>
+
         <div className="container tools-inner">
 
           {/* LEFT */}
-          <div className="tools-left">
+          <div className="tools-left reveal-left">
 
             <h2>
               Get more value from <br />
@@ -871,15 +892,13 @@ export default function Home() {
             </button>
           </div>
 
-          {/* RIGHT */}
+          {/* RIGHT (No animation) */}
           <div className="tools-right">
 
-            {/* FIXED BOT ICON */}
             <div className="bot-icon">
               <img src={botIcon} alt="Bot" />
             </div>
 
-            {/* DOTTED CONNECTOR */}
             <div className="bot-connector" />
 
             {[0, 1, 2, 3, 4].map((pos) => {
@@ -901,7 +920,6 @@ export default function Home() {
               );
             })}
           </div>
-
 
         </div>
       </section>

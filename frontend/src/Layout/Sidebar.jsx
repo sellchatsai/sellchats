@@ -2,6 +2,8 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { FiUser, FiBookOpen, FiMessageSquare } from "react-icons/fi";
 import "./dashboard.css";
 import { FiSettings } from "react-icons/fi";
+import PopupModal from "../Components/Auth/Common/PopupModal";
+import { useState } from "react";
 
 const Sidebar = ({ open, setOpen }) => {
   const location = useLocation();
@@ -12,6 +14,12 @@ const Sidebar = ({ open, setOpen }) => {
     storedUser?._id || storedUser?.id || storedUser?.userId;
 
   const isActive = (path) => location.pathname.startsWith(path);
+  const [popup, setPopup] = useState({
+    show: false,
+    title: "",
+    message: "",
+    onConfirm: null,
+  });
 
   const handleNavigate = (path) => {
     // Mobile logic
@@ -28,84 +36,102 @@ const Sidebar = ({ open, setOpen }) => {
   };
 
   return (
-    <aside className={`sidebar ${open ? "open" : ""}`}>
+    <>
+      <aside className={`sidebar ${open ? "open" : ""}`}>
 
-      {/* AI PERSONA */}
-      <div
-        onClick={() => handleNavigate(`/dashboard/persona/${userId}`)}
-        className={`side-item ${isActive("/dashboard/persona") ? "active" : ""}`}
-      >
-        <FiUser className="icon" />
-        <div>
-          <p className="sidebar-title">AI PERSONA</p>
-          <span className="sidebar-subtitle">
-            How the Agent talks and acts
-          </span>
+        {/* AI PERSONA */}
+        <div
+          onClick={() => handleNavigate(`/dashboard/persona/${userId}`)}
+          className={`side-item ${isActive("/dashboard/persona") ? "active" : ""}`}
+        >
+          <FiUser className="icon" />
+          <div>
+            <p className="sidebar-title">AI PERSONA</p>
+            <span className="sidebar-subtitle">
+              How the agent talks and acts
+            </span>
+          </div>
         </div>
-      </div>
 
-      {/* KNOWLEDGE BASE */}
-      <div
-        onClick={() => handleNavigate(`/dashboard/knowledge/${userId}`)}
-        className={`side-item ${isActive("/dashboard/knowledge") ? "active" : ""}`}
-      >
-        <FiBookOpen className="icon" />
-        <div>
-          <p className="sidebar-title">KNOWLEDGE BASE</p>
-          <span className="sidebar-subtitle">
-            Train Agent for context aware replies
-          </span>
+        {/* KNOWLEDGE BASE */}
+        <div
+          onClick={() => handleNavigate(`/dashboard/knowledge/${userId}`)}
+          className={`side-item ${isActive("/dashboard/knowledge") ? "active" : ""}`}
+        >
+          <FiBookOpen className="icon" />
+          <div>
+            <p className="sidebar-title">KNOWLEDGE BASE</p>
+            <span className="sidebar-subtitle">
+              Train agent for context aware replies
+            </span>
+          </div>
         </div>
-      </div>
 
-      {/* TEACH YOUR AGENT */}
-      <div
-        onClick={async () => {
-          try {
-            const res = await fetch(
-              `http://localhost:4000/api/chatbot/${userId}`
-            );
-            const data = await res.json();
+        {/* TEACH YOUR AGENT */}
+        <div
+          onClick={async () => {
+            try {
+              const res = await fetch(
+                `http://localhost:4000/api/chatbot/${userId}`
+              );
+              const data = await res.json();
 
-            // ❌ BLOCK IF WEBSITE NOT UPLOADED
-            if (!data?.settings?.website) {
-              alert("❌ Please upload a website first to use Teach Your Agent");
-              return;
+              // ❌ BLOCK IF WEBSITE NOT UPLOADED
+              if (!data?.settings?.website) {
+                setPopup({
+                  show: true,
+                  title: "Website Required",
+                  message: "Please upload website first to use teach tour agent.",
+                  onConfirm: () => {
+                    setPopup(prev => ({ ...prev, show: false }));
+                    handleNavigate(`/dashboard/knowledge/${userId}`);
+                  },
+                });
+                return;
+              }
+
+              // ✅ ALLOW
+              handleNavigate(`/dashboard/teach/${userId}`);
+            } catch (err) {
+              console.error(err);
+              alert("Something went wrong");
             }
-
-            // ✅ ALLOW
-            handleNavigate(`/dashboard/teach/${userId}`);
-          } catch (err) {
-            console.error(err);
-            alert("Something went wrong");
-          }
-        }}
-        className={`side-item ${isActive("/dashboard/teach") ? "active" : ""}`}
-      >
-        <FiMessageSquare className="icon" />
-        <div>
-          <p className="sidebar-title">TEACH YOUR AGENT</p>
-          <span className="sidebar-subtitle">
-            Train your Agent with chat
-          </span>
+          }}
+          className={`side-item ${isActive("/dashboard/teach") ? "active" : ""}`}
+        >
+          <FiMessageSquare className="icon" />
+          <div>
+            <p className="sidebar-title">TEACH YOUR AGENT</p>
+            <span className="sidebar-subtitle">
+              Train your agent with chat
+            </span>
+          </div>
         </div>
-      </div>
 
-      {/* SETTINGS */}
-      <div
-        onClick={() => handleNavigate(`/settings/account/${userId}`)}
-        className={`side-item ${isActive("/settings") ? "active" : ""}`}
-        style={{ marginTop: "auto" }}
-      >
-        <FiSettings className="icon" />
-        <div>
-          <p className="sidebar-title">SETTINGS</p>
-          <span className="sidebar-subtitle">Account & Preferences</span>
+        {/* SETTINGS */}
+        <div
+          onClick={() => handleNavigate(`/settings/account/${userId}`)}
+          className={`side-item ${isActive("/settings") ? "active" : ""}`}
+          style={{ marginTop: "auto" }}
+        >
+          <FiSettings className="icon" />
+          <div>
+            <p className="sidebar-title">SETTINGS</p>
+            <span className="sidebar-subtitle">Account & Preferences</span>
+          </div>
         </div>
-      </div>
 
-    </aside>
+      </aside>
+      <PopupModal
+        show={popup.show}
+        title={popup.title}
+        message={popup.message}
+        onClose={() => setPopup(prev => ({ ...prev, show: false }))}
+        onConfirm={popup.onConfirm}
+      />
+    </>
   );
+
 };
 
 export default Sidebar;

@@ -5,7 +5,7 @@ import { createQA, getQAById, updateQA } from "./qaService";
 import "../train-page.css";
 
 const EditQA = () => {
-  const { id } = useParams();
+  const { id, userId: routeUserId } = useParams(); // ✅ added
   const navigate = useNavigate();
 
   const [label, setLabel] = useState("");
@@ -23,8 +23,11 @@ const EditQA = () => {
     }
   };
 
+  const finalUserId = routeUserId || getUserId();
+
   useEffect(() => {
     if (!id) return;
+
     (async () => {
       try {
         const doc = await getQAById(id);
@@ -46,8 +49,7 @@ const EditQA = () => {
       return;
     }
 
-    const userId = getUserId();
-    if (!userId) {
+    if (!finalUserId) {
       setError("Please login again.");
       return;
     }
@@ -57,9 +59,15 @@ const EditQA = () => {
       if (id) {
         await updateQA(id, { label, question, answer });
       } else {
-        await createQA({ label, question, answer, userId });
+        await createQA({
+          label,
+          question,
+          answer,
+          userId: finalUserId,
+        });
       }
-      navigate("/dashboard/knowledge/qa");
+
+      navigate(`/dashboard/knowledge/qa/${finalUserId}`);
     } catch (err) {
       console.error(err);
       setError("Save failed");
@@ -71,7 +79,14 @@ const EditQA = () => {
   return (
     <div className="persona-container">
       <div className="editqa-header">
-        <button className="fu-back-btn" onClick={() => navigate(-1)}>←</button>
+        <button
+          className="fu-back-btn"
+          onClick={() =>
+            navigate(`/dashboard/knowledge/qa/${finalUserId}`)
+          }
+        >
+          ←
+        </button>
         <h2>{id ? "Edit Q&A" : "Add Q&A"}</h2>
       </div>
 
@@ -113,7 +128,9 @@ const EditQA = () => {
           </button>
           <button
             className="editqa-cancel"
-            onClick={() => navigate("/dashboard/knowledge/qa")}
+            onClick={() =>
+              navigate(`/dashboard/knowledge/qa/${finalUserId}`)
+            }
           >
             Cancel
           </button>

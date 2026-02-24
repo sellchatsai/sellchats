@@ -145,7 +145,7 @@ const AIPersona = () => {
         {/* Agent Name */}
         <section className="persona-section">
           <label>Agent Name</label>
-          <span>Give a name to your Agent</span>
+          <span>Give a name to your agent</span>
           <input
             value={persona.agentName}
             onChange={(e) => {

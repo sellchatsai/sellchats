@@ -71,6 +71,16 @@ const AdminLayout = () => {
           className="admin-card"
           onClick={() => {
             setShowMobileHome(false);
+            navigate(`/admin/customers/${userId}`);
+          }}
+        >
+          Customers
+        </div>
+
+        <div
+          className="admin-card"
+          onClick={() => {
+            setShowMobileHome(false);
             navigate(`/admin/goals/${userId}`);
           }}
         >
@@ -87,15 +97,7 @@ const AdminLayout = () => {
           Campaigns
         </div>
 
-        <div
-          className="admin-card"
-          onClick={() => {
-            setShowMobileHome(false);
-            navigate(`/admin/customers/${userId}`);
-          }}
-        >
-          Customers
-        </div>
+
 
       </div>
     );

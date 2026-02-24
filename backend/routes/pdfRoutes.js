@@ -7,8 +7,6 @@ import ChatbotSetting from "../models/ChatbotSetting.js";
 
 const router = express.Router();
 
-console.log("📄 PDF ROUTES LOADED");
-
 /* -------------------- MULTER CONFIG -------------------- */
 
 const storage = multer.diskStorage({

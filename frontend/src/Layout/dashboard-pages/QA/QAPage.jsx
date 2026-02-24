@@ -1,11 +1,13 @@
 import React, { useEffect, useState, useCallback } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import "./QAPage.css";
 import { getUserQAs, deleteQA } from "./qaService";
 import "../train-page.css";
 
 const QAPage = () => {
   const navigate = useNavigate();
+  const { userId: routeUserId } = useParams(); // ✅ added
+
   const [qas, setQas] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -19,39 +21,39 @@ const QAPage = () => {
     }
   };
 
+  const finalUserId = routeUserId || getUserId(); // ✅ route priority
+
   const formatDateTime = (dateString) => {
     if (!dateString) return "-";
-
     const date = new Date(dateString);
 
-    return date.toLocaleDateString("en-IN", {
-      day: "2-digit",
-      month: "short",
-      year: "numeric",
-    }) + " • " +
+    return (
+      date.toLocaleDateString("en-IN", {
+        day: "2-digit",
+        month: "short",
+        year: "numeric",
+      }) +
+      " • " +
       date.toLocaleTimeString("en-IN", {
         hour: "2-digit",
         minute: "2-digit",
         hour12: true,
-      });
+      })
+    );
   };
-
-
-
 
   const fetchQAs = useCallback(async () => {
     setLoading(true);
     setError("");
 
-    const userId = getUserId();
-    if (!userId) {
+    if (!finalUserId) {
       setError("Please login again.");
       setLoading(false);
       return;
     }
 
     try {
-      const data = await getUserQAs(userId);
+      const data = await getUserQAs(finalUserId);
       setQas(data);
 
       if (Array.isArray(data) && data.length > 0) {
@@ -65,14 +67,17 @@ const QAPage = () => {
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [finalUserId]);
 
   useEffect(() => {
     fetchQAs();
   }, [fetchQAs]);
 
-  const handleEdit = (id) => navigate(`/dashboard/knowledge/qa/edit/${id}`);
-  const handleNew = () => navigate("/dashboard/knowledge/qa/new");
+  const handleEdit = (id) =>
+    navigate(`/dashboard/knowledge/qa/edit/${id}/${finalUserId}`);
+
+  const handleNew = () =>
+    navigate(`/dashboard/knowledge/qa/new/${finalUserId}`);
 
   const handleDelete = async (id) => {
     if (!window.confirm("Delete this Q&A?")) return;
@@ -96,7 +101,9 @@ const QAPage = () => {
       <div className="fu-header persona-header">
         <button
           className="fu-back-btn"
-          onClick={() => navigate("/dashboard/knowledge")}
+          onClick={() =>
+            navigate(`/dashboard/knowledge/${finalUserId}`)
+          }
         >
           ←
         </button>
@@ -129,7 +136,6 @@ const QAPage = () => {
               <div className="qa-icon qa-count">
                 {index + 1}
               </div>
-
             </div>
 
             <div className="qa-card-middle">
@@ -139,14 +145,19 @@ const QAPage = () => {
               <div className="qa-date">
                 Agent learned on {formatDateTime(q.createdAt)}
               </div>
-
             </div>
 
             <div className="qa-card-right">
-              <button className="qa-edit" onClick={() => handleEdit(q._id)}>
+              <button
+                className="qa-edit"
+                onClick={() => handleEdit(q._id)}
+              >
                 Edit
               </button>
-              <button className="qa-delete" onClick={() => handleDelete(q._id)}>
+              <button
+                className="qa-delete"
+                onClick={() => handleDelete(q._id)}
+              >
                 Delete
               </button>
             </div>

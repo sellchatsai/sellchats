@@ -40,6 +40,6 @@
 }
 
 .popup-btn.primary {
-  background: #2563eb;
+  background: var(--secondary-color);
   color: #fff;
 }

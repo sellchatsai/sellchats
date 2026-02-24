@@ -106,7 +106,7 @@ function Header({ user, setUser }) {
       setPopup({
         show: true,
         title: "Action Required",
-        message: "Please customize and SAVE chatbot first.",
+        message: "Please customize and save chatbot first.",
         onConfirm: () => setPopup({ ...popup, show: false }),
       });
       return;

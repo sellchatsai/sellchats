@@ -39,7 +39,7 @@
 
 /* ================= COPY BUTTON ================= */
 .copy-btn {
-    background: #4f46e5;
+    background: var(--secondary-color);
     color: white;
     padding: 12px 22px;
     border-radius: 10px;
@@ -285,64 +285,3 @@
 }
 
 
-
-/* =================================================
-   WHY WILL LOVE – SCROLL VIEW ANIMATION (ISOLATED)
-================================================= */
-
-/* HEADER */
-.why-love .why-header.animate {
-  opacity: 0;
-  transform: translateY(50px);
-  transition:
-    opacity 0.9s ease,
-    transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.why-love .why-header.animate.show {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-/* ======================
-   PILLS – BASE
-====================== */
-.why-love .why-pill.animate {
-  opacity: 0;
-  transition:
-    opacity 0.9s ease,
-    transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
-  will-change: transform, opacity;
-}
-
-/* LEFT SIDE PILLS */
-.why-love .why-pill.left.animate {
-  transform: translateX(-120px);
-}
-
-/* RIGHT SIDE PILLS */
-.why-love .why-pill.right.animate {
-  transform: translateX(120px);
-}
-
-/* WHEN IN VIEW */
-.why-love .why-pill.animate.show {
-  opacity: 1;
-  transform: translateX(0);
-}
-
-/* STAGGER FEEL (natural flow) */
-.why-love .why-pill:nth-child(1) { transition-delay: 0.05s; }
-.why-love .why-pill:nth-child(2) { transition-delay: 0.15s; }
-.why-love .why-pill:nth-child(3) { transition-delay: 0.25s; }
-.why-love .why-pill:nth-child(4) { transition-delay: 0.35s; }
-
-/* ======================
-   MOBILE – VERTICAL FLOW
-====================== */
-@media (max-width: 768px) {
-  .why-love .why-pill.left.animate,
-  .why-love .why-pill.right.animate {
-    transform: translateY(40px);
-  }
-}

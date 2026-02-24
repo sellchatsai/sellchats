@@ -1,48 +1,51 @@
 import React, { useState, useEffect } from "react";
 import "./FileUpload.css";
 import { AiOutlineCloudUpload } from "react-icons/ai";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom"; // ✅ added useParams
 import axios from "axios";
 import "./train-page.css";
 
 const FileUpload = () => {
     const navigate = useNavigate();
+    const { userId: routeUserId } = useParams(); // ✅ route userId
 
     const [file, setFile] = useState(null);
     const [error, setError] = useState("");
     const [success, setSuccess] = useState("");
     const [isUploading, setIsUploading] = useState(false);
 
-    // 🔹 NEW
     const [showPopup, setShowPopup] = useState(false);
     const [uploadDone, setUploadDone] = useState(false);
 
-    // Load userId
-    let userId = null;
+    // 🔹 localStorage userId (NO DELETE)
+    let storedUserId = null;
     try {
         const storedUser = localStorage.getItem("user");
         if (storedUser) {
             const parsed = JSON.parse(storedUser);
-            userId = parsed?._id || parsed?.id || parsed?.userId;
+            storedUserId = parsed?._id || parsed?.id || parsed?.userId;
         }
-    } catch { }
+    } catch {}
+
+    // ✅ Final userId (route first, fallback localStorage)
+    const finalUserId = routeUserId || storedUserId;
 
     /* ================= LOAD PDF STATUS FROM DB ================= */
     useEffect(() => {
-        if (!userId) return;
+        if (!finalUserId) return;
 
         axios
-            .get(`http://localhost:4000/api/pdf/status/${userId}`)
+            .get(`http://localhost:4000/api/pdf/status/${finalUserId}`)
             .then((res) => {
                 if (res.data?.hasPdf) {
-                    setFile({ name: res.data.pdfName }); // only name show
-                    setUploadDone(true);                // 🔒 permanently lock
+                    setFile({ name: res.data.pdfName });
+                    setUploadDone(true);
                 }
             })
-            .catch(() => { });
-    }, [userId]);
+            .catch(() => {});
+    }, [finalUserId]);
 
-    /* ================= FILE SELECT (NO AUTO UPLOAD) ================= */
+    /* ================= FILE SELECT ================= */
     const handleFileChange = (e) => {
         const selected = e.target.files[0];
         if (!selected) return;
@@ -54,7 +57,7 @@ const FileUpload = () => {
 
         setError("");
         setSuccess("");
-        setFile(selected); // only set file
+        setFile(selected);
     };
 
     /* ================= CANCEL FILE ================= */
@@ -67,7 +70,7 @@ const FileUpload = () => {
     const handleUpload = async () => {
         if (!file || uploadDone || !(file instanceof File)) return;
 
-        if (!userId) {
+        if (!finalUserId) {
             setError("User ID missing!");
             return;
         }
@@ -79,7 +82,7 @@ const FileUpload = () => {
 
         const formData = new FormData();
         formData.append("pdf", file);
-        formData.append("userId", userId);
+        formData.append("userId", finalUserId);
 
         try {
             await axios.post(
@@ -88,7 +91,6 @@ const FileUpload = () => {
                 { headers: { "Content-Type": "multipart/form-data" } }
             );
 
-            // ⏳ 2 sec loader
             setTimeout(() => {
                 setIsUploading(false);
                 setSuccess("PDF uploaded successfully!");
@@ -110,7 +112,7 @@ const FileUpload = () => {
             <div className="fu-header persona-header">
                 <button
                     className="fu-back-btn"
-                    onClick={() => navigate("/dashboard/knowledge")}
+                    onClick={() => navigate(`/dashboard/knowledge/${finalUserId}`)} // ✅ fixed
                 >
                     ←
                 </button>
@@ -122,8 +124,6 @@ const FileUpload = () => {
             </div>
 
             <div className="fu-card">
-
-                {/* Upload box only when no file & not uploaded before */}
                 {!file && !uploadDone && (
                     <div className="fu-upload-box">
                         <AiOutlineCloudUpload className="fu-upload-icon" />
@@ -143,12 +143,10 @@ const FileUpload = () => {
 
                 {error && <p className="fu-error">{error}</p>}
 
-                {/* Selected file row */}
                 {file && (
                     <div className="fu-file-row">
                         <p className="fu-success">Selected: {file.name}</p>
 
-                        {/* Cancel only if not uploaded */}
                         {!uploadDone && (
                             <button
                                 className="fu-cancel-btn"
@@ -161,7 +159,6 @@ const FileUpload = () => {
                 )}
             </div>
 
-            {/* Upload Button */}
             <button
                 className={`fu-save-btn ${uploadDone ? "blur" : ""}`}
                 onClick={handleUpload}
@@ -170,7 +167,6 @@ const FileUpload = () => {
                 {isUploading ? "Uploading..." : "Upload"}
             </button>
 
-            {/* ================= POPUP ================= */}
             {showPopup && (
                 <div className="popup-overlay">
                     <div className="popup-box">
@@ -182,7 +178,10 @@ const FileUpload = () => {
                         ) : (
                             <>
                                 <p>{success}</p>
-                                <button className="popup-box-btn" onClick={() => setShowPopup(false)}>
+                                <button
+                                    className="popup-box-btn"
+                                    onClick={() => setShowPopup(false)}
+                                >
                                     OK
                                 </button>
                             </>
