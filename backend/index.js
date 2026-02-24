@@ -23,9 +23,7 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 4000;
 
-/* ======================================================
-   🔥 PERFECT CORS CONFIG (VERCEL + LOCAL + PREVIEW)
-====================================================== */
+
 
 const allowedOrigins = [
   "http://localhost:3000",
@@ -54,7 +52,6 @@ app.use(
   })
 );
 
-// ✅ REQUIRED for preflight requests
 app.options("*", cors());
 
 /* ======================================================
