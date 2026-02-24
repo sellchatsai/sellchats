@@ -1096,6 +1096,10 @@
     .testimonial-slider {
         overflow-x: auto;
         padding: 0;
+        scroll-snap-type: x mandatory;
+        /* 🔥 SNAP */
+        scroll-padding-left: 50%;
+        scroll-padding-right: 50%;
     }
 
     .testimonial-track {
@@ -1106,7 +1110,7 @@
 
     /* 🔥 CENTER SPACERS */
     .testimonial-spacer {
-        flex: 0 0 calc((100vw - 300px) / 2);
+        flex: 0 0 calc((100vw - 280px) / 2);
     }
 
     .testimonial-card {
@@ -1116,6 +1120,7 @@
         display: flex;
         flex-direction: column;
         border-radius: 18px;
+        scroll-snap-align: center;
     }
 
     .testimonial-des {
