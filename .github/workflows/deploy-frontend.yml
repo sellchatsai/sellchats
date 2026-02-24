@@ -36,4 +36,4 @@ jobs:
           password: ${{ secrets.HOSTINGER_PASSWORD }}
           port: 21
           local-dir: frontend/build/
-          server-dir: /
+          server-dir: public_html/
