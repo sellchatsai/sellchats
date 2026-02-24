@@ -116,6 +116,8 @@ const AIPersona = () => {
     "Help Desk Specialist",
     "Client Service Representative",
     "Technical Support Agent",
+    "Customer Support Agent",
+    "Sales Agent"
   ];
 
 
@@ -192,9 +194,10 @@ const AIPersona = () => {
               markDirty();
             }}
           >
-            <option value="Friendly">😊 Friendly</option>
-            <option value="Professional">🧑‍💼 Professional</option>
-            <option value="Casual">☕ Casual</option>
+            <option value="Friendly">Friendly</option>
+            <option value="Professional">Professional</option>
+            <option value="Casual">Casual</option>
+            <option value="Soft-Selling">Soft-Selling</option>
           </select>
         </section>
 
