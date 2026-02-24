@@ -449,7 +449,7 @@ export default function Home() {
           {/* LEFT CONTENT */}
           <div className="hero-left fade-left">
             <h1>
-              AI Chatbot for 02 <br /> your site
+              AI Chatbot for <br /> your site
             </h1>
 
             <p>
