@@ -29,7 +29,6 @@ const upload = multer({
 });
 
 /* -------------------- GET PDF STATUS -------------------- */
-// GET /api/pdf/status/:userId
 router.get("/status/:userId", async (req, res) => {
   try {
     const { userId } = req.params;

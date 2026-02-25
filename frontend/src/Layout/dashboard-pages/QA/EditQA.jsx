@@ -5,7 +5,7 @@ import { createQA, getQAById, updateQA } from "./qaService";
 import "../train-page.css";
 
 const EditQA = () => {
-  const { id, userId: routeUserId } = useParams(); // ✅ added
+  const { id, userId: routeUserId } = useParams();
   const navigate = useNavigate();
 
   const [label, setLabel] = useState("");

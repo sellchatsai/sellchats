@@ -281,7 +281,7 @@ const AIPersona = () => {
                     onClick={() => {
                       setPersona({
                         ...persona,
-                        responseLength: opt.value, // 👈 NUMBER
+                        responseLength: opt.value, 
                       });
                       markDirty();
                     }}
@@ -324,7 +324,7 @@ const AIPersona = () => {
                   className="open-btn"
                   onClick={() => {
                     setShowSaveModal(false);
-                    setSaveStatus("loading"); // reset for next time
+                    setSaveStatus("loading"); 
                   }}
                 >
                   OK

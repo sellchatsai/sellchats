@@ -8,7 +8,6 @@ const connectDB = async () => {
     await mongoose.connect(process.env.MONGO_URL);
     console.log("✅ MongoDB Connected");
 
-    // 🔥 PERMANENT FIX: remove old wrong index
     const db = mongoose.connection.db;
 
     const collections = await db

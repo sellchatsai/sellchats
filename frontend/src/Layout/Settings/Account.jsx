@@ -25,7 +25,6 @@ const Account = () => {
   const [chatbot, setChatbot] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  // ✅ SUCCESS MESSAGE STATE
   const [successMsg, setSuccessMsg] = useState("");
 
   const showSuccess = (msg) => {

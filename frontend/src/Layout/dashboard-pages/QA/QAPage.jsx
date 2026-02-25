@@ -6,7 +6,7 @@ import "../train-page.css";
 
 const QAPage = () => {
   const navigate = useNavigate();
-  const { userId: routeUserId } = useParams(); // ✅ added
+  const { userId: routeUserId } = useParams(); 
 
   const [qas, setQas] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -21,7 +21,7 @@ const QAPage = () => {
     }
   };
 
-  const finalUserId = routeUserId || getUserId(); // ✅ route priority
+  const finalUserId = routeUserId || getUserId(); 
 
   const formatDateTime = (dateString) => {
     if (!dateString) return "-";

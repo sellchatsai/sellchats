@@ -11,7 +11,7 @@ import "./settings.css";
 const SettingsLayout = ({ user, setUser }) => {
   const location = useLocation();
   const navigate = useNavigate();
-  const { userId: routeUserId } = useParams(); // ✅ added
+  const { userId: routeUserId } = useParams(); 
 
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 
@@ -35,7 +35,6 @@ const SettingsLayout = ({ user, setUser }) => {
     }
   } catch {}
 
-  // ✅ final userId
   const finalUserId = routeUserId || propUserId || storedUserId;
 
   const isSettingsHome = location.pathname === "/settings";

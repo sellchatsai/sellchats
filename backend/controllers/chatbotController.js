@@ -1,7 +1,7 @@
 import fetch from "node-fetch";
 import ChatbotSetting from "../models/ChatbotSetting.js";
-import ChatLead from "../models/ChatLead.js";          // ✅ NEW
-import { v4 as uuidv4 } from "uuid";                   // ✅ NEW
+import ChatLead from "../models/ChatLead.js";          
+import { v4 as uuidv4 } from "uuid";                  
 
 /* ============================================================
    ⭐ SAVE / UPDATE CHATBOT SETTINGS (SAFE)

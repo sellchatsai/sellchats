@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import "./account.css"; // ✅ SAME CSS
+import "./account.css"; 
 
 const Row = ({ label, children, action }) => {
   return (

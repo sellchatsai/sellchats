@@ -14,11 +14,7 @@ router.get("/:userId.js", async (req, res) => {
   const BACKEND_URL =
     process.env.BACKEND_URL || "http://localhost:4000";
 
-  /* ======================================================
-        🔥 AVATAR KEY → PUBLIC URL
-        DB:  b-image-03
-        URL: http://localhost:3000/avatars/b-image-03.svg
-  ====================================================== */
+
   const avatarKey = setting?.avatar || "";
   const avatarUrl = avatarKey
     ? `${FRONTEND_URL}/avatars/${avatarKey}.svg`

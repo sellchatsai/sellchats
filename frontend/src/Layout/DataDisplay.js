@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom"; // <-- ADD
+import { useNavigate } from "react-router-dom"; 
 
 const DataDisplay = ({ user, triggerRefresh }) => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const navigate = useNavigate(); // <-- ADD
+  const navigate = useNavigate(); 
 
   useEffect(() => {
     if (!user) return;
@@ -22,12 +22,12 @@ const DataDisplay = ({ user, triggerRefresh }) => {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("accessToken")}`, // <-- ADD (if token use)
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`, 
           },
-          credentials: "include", // <-- ADD (cookies send for refresh token)
+          credentials: "include", 
         });
 
-        // 🟥 USER DELETED OR TOKEN INVALID → AUTO LOGOUT
+        
         if (response.status === 401 || response.status === 404) {
           console.warn("User deleted or session expired → auto-logout");
 
@@ -35,7 +35,7 @@ const DataDisplay = ({ user, triggerRefresh }) => {
           localStorage.removeItem("user");
           localStorage.removeItem("accessToken");
 
-          navigate("/login"); // redirect
+          navigate("/login"); 
           return;
         }
 

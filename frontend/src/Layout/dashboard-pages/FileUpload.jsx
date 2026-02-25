@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
 import "./FileUpload.css";
 import { AiOutlineCloudUpload } from "react-icons/ai";
-import { useNavigate, useParams } from "react-router-dom"; // ✅ added useParams
+import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import "./train-page.css";
 
 const FileUpload = () => {
     const navigate = useNavigate();
-    const { userId: routeUserId } = useParams(); // ✅ route userId
+    const { userId: routeUserId } = useParams(); 
 
     const [file, setFile] = useState(null);
     const [error, setError] = useState("");
@@ -112,7 +112,7 @@ const FileUpload = () => {
             <div className="fu-header persona-header">
                 <button
                     className="fu-back-btn"
-                    onClick={() => navigate(`/dashboard/knowledge/${finalUserId}`)} // ✅ fixed
+                    onClick={() => navigate(`/dashboard/knowledge/${finalUserId}`)}
                 >
                     ←
                 </button>

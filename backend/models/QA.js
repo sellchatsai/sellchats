@@ -15,7 +15,7 @@ const qaSchema = new mongoose.Schema({
   userId: {
     type: String,
     required: true,
-    unique: true   // 🔥 ONLY ONE DOCUMENT PER USER
+    unique: true  
   },
   items: [qaItemSchema]
 });

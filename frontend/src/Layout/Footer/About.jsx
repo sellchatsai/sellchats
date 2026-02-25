@@ -25,7 +25,6 @@ export default function About() {
 
             <section className="about-page">
                 <div className="about-container">
-                    {/* Typing badge */}
                     <div className="about-badge">
                         {displayText}
                         <span className="cursor">|</span>

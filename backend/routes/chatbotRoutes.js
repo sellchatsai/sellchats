@@ -3,7 +3,7 @@ import {
   saveChatbotSettings,
   getChatbotSettings,
   chatWithBot,
-  registerLead          // ✅ NEW IMPORT
+  registerLead          
 } from "../controllers/chatbotController.js";
 
 import QA from "../models/QA.js";
@@ -20,7 +20,7 @@ router.get("/:userId", getChatbotSettings);
 /* ===============================
    ⭐ REGISTER CHAT LEAD (EMAIL CAPTURE)
 ================================ */
-router.post("/register-lead", registerLead);   // ✅ NEW ROUTE
+router.post("/register-lead", registerLead);   
 
 /* ===============================
    MAIN CHAT ENDPOINT
@@ -36,7 +36,7 @@ router.get("/knowledge-status/:userId", async (req, res) => {
 
     const bot = await ChatbotSetting.findOne({ userId });
 
-    const hasWebsite = !!bot?.website; // ✅ ONLY WEBSITE
+    const hasWebsite = !!bot?.website; 
 
     res.json({
       hasWebsite

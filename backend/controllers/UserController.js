@@ -186,7 +186,7 @@ export const removeAvatar = async (req, res) => {
   try {
     const user = await User.findByIdAndUpdate(
       req.params.id,
-      { avatar: "" },   // 🔥 REMOVE FROM DB
+      { avatar: "" },   
       { new: true }
     ).select("-password");
 

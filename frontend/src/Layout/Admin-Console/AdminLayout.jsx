@@ -33,9 +33,9 @@ const AdminLayout = () => {
 
   const pageTitleMap = {
     [`/admin/dashboard/${userId}`]: "Dashboard",
+    [`/admin/customers/${userId}`]: "Customers",
     [`/admin/goals/${userId}`]: "Goals",
     [`/admin/campaigns/${userId}`]: "Campaigns",
-    [`/admin/customers/${userId}`]: "Customers",
   };
 
   const pageTitle = pageTitleMap[location.pathname];
@@ -112,14 +112,14 @@ const AdminLayout = () => {
           <NavLink to={`/admin/dashboard/${userId}`} className="admin-link">
             Dashboard
           </NavLink>
+          <NavLink to={`/admin/customers/${userId}`} className="admin-link">
+            Customers
+          </NavLink>
           <NavLink to={`/admin/goals/${userId}`} className="admin-link">
             Goals
           </NavLink>
           <NavLink to={`/admin/campaigns/${userId}`} className="admin-link">
             Campaigns
-          </NavLink>
-          <NavLink to={`/admin/customers/${userId}`} className="admin-link">
-            Customers
           </NavLink>
         </aside>
       )}

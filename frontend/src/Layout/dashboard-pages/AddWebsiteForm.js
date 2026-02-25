@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 import "./AddWebsite.css";
 import axios from "axios";
-import { useNavigate, useParams } from "react-router-dom"; // ✅ added useParams
+import { useNavigate, useParams } from "react-router-dom"; 
 import "./train-page.css";
 
 const AddWebsiteForm = ({ user }) => {
   const navigate = useNavigate();
-  const { userId: routeUserId } = useParams(); // ✅ route param support
+  const { userId: routeUserId } = useParams(); 
 
   const [url, setUrl] = useState("");
   const [storedWebsite, setStoredWebsite] = useState(null);
@@ -91,7 +91,7 @@ const AddWebsiteForm = ({ user }) => {
       <div className="link-header-row persona-header">
         <button
           className="fu-back-btn"
-          onClick={() => navigate(`/dashboard/knowledge/${finalUserId}`)} // ✅ fixed
+          onClick={() => navigate(`/dashboard/knowledge/${finalUserId}`)} 
         >
           ←
         </button>

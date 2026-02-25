@@ -11,14 +11,10 @@ import { registerUser, loginUser } from "../controllers/UserController.js";
 const router = express.Router();
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
-// ==============================
-// TEMP OTP STORE
-// ==============================
+
 let otpStore = {};
 
-// ==============================
-// HELPERS
-// ==============================
+
 const BACKEND_CALLBACK =
   process.env.NODE_ENV === "production"
     ? "http://localhost:4000/api/auth/google/callback"
@@ -111,7 +107,7 @@ router.get("/google", (req, res) => {
         "https://www.googleapis.com/auth/userinfo.email",
         "https://www.googleapis.com/auth/userinfo.profile",
       ],
-      redirect_uri: BACKEND_CALLBACK, // ✅ FIXED
+      redirect_uri: BACKEND_CALLBACK, 
     });
 
     res.json({ url });
@@ -134,7 +130,7 @@ router.get("/google/callback", async (req, res) => {
         code,
         client_id: process.env.GOOGLE_CLIENT_ID,
         client_secret: process.env.GOOGLE_CLIENT_SECRET,
-        redirect_uri: BACKEND_CALLBACK, // ✅ FIXED
+        redirect_uri: BACKEND_CALLBACK, 
         grant_type: "authorization_code",
       },
       { headers: { "Content-Type": "application/json" } }

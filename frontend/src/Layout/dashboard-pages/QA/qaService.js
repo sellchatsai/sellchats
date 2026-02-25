@@ -28,7 +28,7 @@ export const getUserQAs = async (userId) => {
 export const getQAById = async (id) => {
   try {
     const res = await axios.get(`${API}/${id}`);
-    return res.data; // 🔥 must include label
+    return res.data; 
   } catch (err) {
     console.error("Get QA By ID Error:", err);
     throw err;

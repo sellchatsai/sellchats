@@ -77,7 +77,7 @@ const CustomerChat = () => {
                 <img src={BotAvatar} className="msg-avatar" alt="bot" />
               )}
               <div
-                className={`msg-bubble ${
+                className={`msg-bubble-chat ${
                   m.role === "assistant" ? "bot-msg" : "user-msg"
                 }`}
               >

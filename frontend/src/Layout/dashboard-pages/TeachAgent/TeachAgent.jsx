@@ -112,7 +112,7 @@ const TeachAgent = ({ user }) => {
 
     typeWriterEffect(msg, () => {
       setMessages([{ sender: "bot", text: msg }]);
-      setWelcomeDone(true);   // 🔥 important
+      setWelcomeDone(true);
     });
   }, []);
 
@@ -191,7 +191,6 @@ const TeachAgent = ({ user }) => {
   ====================== */
   return (
     <div className="teach-chat-container">
-      {/* HEADER */}
       <div className="teach-header">
         <div className="persona-header">
           <button className="back-btn" onClick={() => setSidebarOpen(true)}>
@@ -209,11 +208,8 @@ const TeachAgent = ({ user }) => {
         </div>
       </div>
 
-      {/* CHAT */}
       <div className="chat-wrapper">
         <div className="chat-area">
-
-          {/* MESSAGES (Greeting first) */}
           {messages.map((m, i) => (
             <div key={i} className="chat-row">
               {m.sender === "bot" && (
@@ -225,7 +221,6 @@ const TeachAgent = ({ user }) => {
             </div>
           ))}
 
-          {/* TYPEWRITING EFFECT */}
           {isTypewriting && (
             <div className="chat-row">
               <img src={BotAvatar} className="msg-avatar" alt="bot" />
@@ -233,7 +228,6 @@ const TeachAgent = ({ user }) => {
             </div>
           )}
 
-          {/* Q&A CHIPS */}
           {welcomeDone && labels.length > 0 && (
             <div className="chatbot-labels">
               {labels.map((item, i) => (
@@ -257,7 +251,6 @@ const TeachAgent = ({ user }) => {
             </div>
           )}
 
-          {/* 🔥 MOVE LEAD FORM HERE (AFTER CHIPS) */}
           {showLeadForm && (
             <div className="chat-row">
               <img src={BotAvatar} className="msg-avatar" alt="bot" />
@@ -328,7 +321,6 @@ const TeachAgent = ({ user }) => {
           <div ref={bottomRef} />
         </div>
 
-        {/* INPUT */}
         {!showLeadForm && (
           <div className="input-area">
             <input

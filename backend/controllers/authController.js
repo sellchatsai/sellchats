@@ -2,8 +2,7 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import axios from "axios";
 import User from "../models/User.js";
-import { generateAccessToken, generateRefreshToken } from "../token.js";  // <-- ADD THIS
-
+import { generateAccessToken, generateRefreshToken } from "../token.js";  
 export const loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;

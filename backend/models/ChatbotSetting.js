@@ -10,7 +10,6 @@
       alignment: String,
       website: { type: String, default: null },
 
-      // ✅ PDF TRAINING FIELDS
       pdfName: { type: String, default: null },
       pdfPath: { type: String, default: null },
       isPdfTrained: { type: Boolean, default: false }
