@@ -3,7 +3,6 @@ import "./AddWebsite.css";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import "./train-page.css";
-import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 
 const AddWebsiteForm = ({ user }) => {
   const navigate = useNavigate();
@@ -13,9 +12,6 @@ const AddWebsiteForm = ({ user }) => {
   const [storedWebsite, setStoredWebsite] = useState(null);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
-  const [showPopup, setShowPopup] = useState(false);
-  const [popupLoading, setPopupLoading] = useState(false);
-  const [popupMsg, setPopupMsg] = useState("");
 
 
   // 🔹 original userId logic (NO REMOVE)
@@ -70,12 +66,14 @@ const AddWebsiteForm = ({ user }) => {
         }
       );
 
-      // 🔥 Trigger Global Training Bar
+      // 🔥 Trigger Header Training Bar
       localStorage.setItem("trainingActive", "true");
       localStorage.setItem("trainingStartTime", Date.now());
 
-      // refresh page so header detects it
-      window.location.reload();
+      window.dispatchEvent(new Event("trainingStarted"));
+
+      // optional success message
+      setSuccess("✅ Website uploaded successfully!");
 
     } catch (err) {
       setError(
@@ -94,7 +92,7 @@ const AddWebsiteForm = ({ user }) => {
         >
           ←
         </button>
-
+        -
         <div>
           <h2>LINK</h2>
           <p>Add website URLs to train your Agent</p>
@@ -122,54 +120,19 @@ const AddWebsiteForm = ({ user }) => {
         <button
           className="crawl-btn"
           onClick={handleCrawl}
-          disabled={popupLoading || !!storedWebsite}
+          disabled={!!storedWebsite}
           style={{
             opacity: storedWebsite ? 0.5 : 1,
             cursor: storedWebsite ? "not-allowed" : "pointer"
           }}
         >
-          {popupLoading ? "Uploading..." : "Upload"}
+          Upload
         </button>
 
         {error && <p className="error-msg">{error}</p>}
         {success && <p className="success-msg">{success}</p>}
       </div>
 
-      {showPopup && (
-        <div className="popup-overlay">
-          <div className="popup-box">
-            {popupLoading ? (
-              <>
-                <div className="loader"></div>
-                <p>Uploading...</p>
-              </>
-            ) : (
-              <>
-                <DotLottieReact
-                  src="https://lottie.host/9cdc20d0-5731-433d-afca-0074647dde22/RMxOTfxH4P.lottie"
-                  autoplay
-                  loop={false}
-                  style={{
-                    width: 120,
-                    height: 120,
-                    margin: "0 auto",
-                    display: "block"
-                  }}
-                />
-
-                <p className="popup-message">{popupMsg}</p>
-
-                <button
-                  className="popup-box-btn"
-                  onClick={() => setShowPopup(false)}
-                >
-                  OK
-                </button>
-              </>
-            )}
-          </div>
-        </div>
-      )}
     </div>
   );
 };

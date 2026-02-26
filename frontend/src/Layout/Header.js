@@ -68,35 +68,51 @@ function Header({ user, setUser }) {
 
 
   useEffect(() => {
-    const trainingActive = localStorage.getItem("trainingActive");
-    const startTime = localStorage.getItem("trainingStartTime");
 
-    if (!trainingActive || !startTime) return;
+    let interval;
 
-    setShowTrainingBar(true);
+    const startTraining = () => {
+      const trainingActive = localStorage.getItem("trainingActive");
+      const startTime = localStorage.getItem("trainingStartTime");
 
-    const totalTime = 300; // 5 min
-    const interval = setInterval(() => {
-      const elapsed = Math.floor((Date.now() - startTime) / 1000);
-      const percentage = Math.min(
-        Math.floor((elapsed / totalTime) * 100),
-        100
-      );
+      if (!trainingActive || !startTime) return;
 
-      setTrainingProgress(percentage);
+      setShowTrainingBar(true);
 
-      if (percentage >= 100) {
-        clearInterval(interval);
-        localStorage.removeItem("trainingActive");
-        localStorage.removeItem("trainingStartTime");
+      const totalTime = 300; // 5 min
 
-        setTimeout(() => {
-          setShowTrainingBar(false);
-        }, 800);
-      }
-    }, 1000);
+      interval = setInterval(() => {
+        const elapsed = Math.floor((Date.now() - startTime) / 1000);
+        const percentage = Math.min(
+          Math.floor((elapsed / totalTime) * 100),
+          100
+        );
 
-    return () => clearInterval(interval);
+        setTrainingProgress(percentage);
+
+        if (percentage >= 100) {
+          clearInterval(interval);
+          localStorage.removeItem("trainingActive");
+          localStorage.removeItem("trainingStartTime");
+
+          setTimeout(() => {
+            setShowTrainingBar(false);
+          }, 800);
+        }
+      }, 1000);
+    };
+
+    // 🔥 Run if already active
+    startTraining();
+
+    // 🔥 SAME TAB instant trigger
+    window.addEventListener("trainingStarted", startTraining);
+
+    return () => {
+      clearInterval(interval);
+      window.removeEventListener("trainingStarted", startTraining);
+    };
+
   }, []);
 
 
@@ -300,24 +316,24 @@ function Header({ user, setUser }) {
 
       )}
 
-     {showTrainingBar && (
-  <div className="training-wrapper">
-    <div className="training-bar-container">
+      {showTrainingBar && (
+        <div className="training-wrapper">
+          <div className="training-bar-container">
 
-      {/* Fill Layer */}
-      <div
-        className="training-bar-fill"
-        style={{ width: `${trainingProgress}%` }}
-      />
+            {/* Fill Layer */}
+            <div
+              className="training-bar-fill"
+              style={{ width: `${trainingProgress}%` }}
+            />
 
-      {/* Text Layer */}
-      <div className="training-bar-text">
-        {trainingProgress}% • Website Upload & Training in Progress...
-      </div>
+            {/* Text Layer */}
+            <div className="training-bar-text">
+              {trainingProgress}% • Website Upload & Training in Progress...
+            </div>
 
-    </div>
-  </div>
-)}
+          </div>
+        </div>
+      )}
     </>
   );
 }
