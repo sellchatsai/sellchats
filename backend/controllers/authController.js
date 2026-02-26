@@ -24,6 +24,7 @@ export const loginUser = async (req, res) => {
     const accessToken = generateAccessToken(user._id);
     const refreshToken = generateRefreshToken(user._id);
 
+
     res.cookie("refreshToken", refreshToken, {
       httpOnly: true,
       secure: false,

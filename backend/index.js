@@ -17,6 +17,7 @@ import personaRoutes from "./routes/personaRoutes.js";
 import pdfRoutes from "./routes/pdfRoutes.js";
 import adminRoutes from "./routes/adminRoutes.js";
 import contactRoute from "./routes/contact.js"
+import adminAuthRoutes from "./routes/adminAuthRoutes.js";
 
 dotenv.config();
 
@@ -93,6 +94,7 @@ app.use("/api/persona", personaRoutes);
 app.use("/api/pdf", pdfRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api/contact", contactRoute);
+app.use("/api/admin-auth", adminAuthRoutes);
 
 
 app.use(

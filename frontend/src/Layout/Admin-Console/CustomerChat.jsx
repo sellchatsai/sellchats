@@ -19,7 +19,7 @@ const CustomerChat = () => {
   useEffect(() => {
     const fetchChat = async () => {
       try {
-        const res = await axios.get(`${apiBase}/api/admin/chats`, {
+        const res = await axios.get(`${apiBase}/api/admin/chat-messages`, {
           params: { userId, leadId: id },
         });
 

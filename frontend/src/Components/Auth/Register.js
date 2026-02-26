@@ -71,7 +71,7 @@ const Register = () => {
                   },
                 })}
               />
-              {errors.name && <div >{errors.name.message}</div>}
+              {errors.name && <div className="error">{errors.name.message}</div>}
             </div>
 
             {/* EMAIL */}

@@ -148,7 +148,6 @@ p.info-text {
 }
 
 .popup-box p {
-  margin-top: 15px;
   font-size: 16px;
   font-weight: 500;
 }
@@ -189,4 +188,17 @@ p.info-text {
     transform: scale(1);
     opacity: 1;
   }
+}
+
+
+.success-animation {
+  width: 90px;
+  height: 90px;
+  margin-bottom: 12px;
+}
+
+.popup-message {
+  font-size: 16px;
+  font-weight: 500;
+  margin-bottom: 15px;
 }

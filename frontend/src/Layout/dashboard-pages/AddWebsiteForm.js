@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
 import "./AddWebsite.css";
 import axios from "axios";
-import { useNavigate, useParams } from "react-router-dom"; 
+import { useNavigate, useParams } from "react-router-dom";
 import "./train-page.css";
+import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 
 const AddWebsiteForm = ({ user }) => {
   const navigate = useNavigate();
-  const { userId: routeUserId } = useParams(); 
+  const { userId: routeUserId } = useParams();
 
   const [url, setUrl] = useState("");
   const [storedWebsite, setStoredWebsite] = useState(null);
@@ -15,6 +16,7 @@ const AddWebsiteForm = ({ user }) => {
   const [showPopup, setShowPopup] = useState(false);
   const [popupLoading, setPopupLoading] = useState(false);
   const [popupMsg, setPopupMsg] = useState("");
+
 
   // 🔹 original userId logic (NO REMOVE)
   const propUserId = user?._id || user?.id || user?.userId;
@@ -28,7 +30,7 @@ const AddWebsiteForm = ({ user }) => {
       storedUserId =
         parsed?._id || parsed?.id || parsed?.userId;
     }
-  } catch {}
+  } catch { }
 
   // ✅ final userId (priority: route > prop > localStorage)
   const finalUserId = routeUserId || propUserId || storedUserId;
@@ -46,7 +48,7 @@ const AddWebsiteForm = ({ user }) => {
           setUrl(website);
         }
       })
-      .catch(() => {});
+      .catch(() => { });
   }, [finalUserId]);
 
   /* ================= CRAWL WEBSITE ================= */
@@ -57,8 +59,6 @@ const AddWebsiteForm = ({ user }) => {
     }
 
     try {
-      setPopupLoading(true);
-      setShowPopup(true);
       setError("");
       setSuccess("");
 
@@ -70,15 +70,14 @@ const AddWebsiteForm = ({ user }) => {
         }
       );
 
-      setTimeout(() => {
-        setPopupLoading(false);
-        setPopupMsg("✅ Website uploaded. Training started.");
-        setStoredWebsite(url.trim());
-      }, 2000);
+      // 🔥 Trigger Global Training Bar
+      localStorage.setItem("trainingActive", "true");
+      localStorage.setItem("trainingStartTime", Date.now());
+
+      // refresh page so header detects it
+      window.location.reload();
 
     } catch (err) {
-      setPopupLoading(false);
-      setShowPopup(false);
       setError(
         err?.response?.data?.message ||
         "❌ Failed to upload website"
@@ -91,7 +90,7 @@ const AddWebsiteForm = ({ user }) => {
       <div className="link-header-row persona-header">
         <button
           className="fu-back-btn"
-          onClick={() => navigate(`/dashboard/knowledge/${finalUserId}`)} 
+          onClick={() => navigate(`/dashboard/knowledge/${finalUserId}`)}
         >
           ←
         </button>
@@ -146,7 +145,20 @@ const AddWebsiteForm = ({ user }) => {
               </>
             ) : (
               <>
-                <p>{popupMsg}</p>
+                <DotLottieReact
+                  src="https://lottie.host/9cdc20d0-5731-433d-afca-0074647dde22/RMxOTfxH4P.lottie"
+                  autoplay
+                  loop={false}
+                  style={{
+                    width: 120,
+                    height: 120,
+                    margin: "0 auto",
+                    display: "block"
+                  }}
+                />
+
+                <p className="popup-message">{popupMsg}</p>
+
                 <button
                   className="popup-box-btn"
                   onClick={() => setShowPopup(false)}

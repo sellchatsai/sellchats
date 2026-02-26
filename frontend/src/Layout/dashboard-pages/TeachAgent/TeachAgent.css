@@ -54,18 +54,22 @@
   overflow-y: auto;
   display: flex;
   flex-direction: column;
-  padding: 20px 12px 30px;
+  justify-content: flex-start;
+  align-items: stretch;
+  padding: 20px 16px 20px;
   background: #f5f6fc;
+}
+
+.chat-row {
+  display: flex;
+  gap: 10px;
+  align-items: flex-end;
+  width: 100%;
 }
 
 /* ===============================
    CHAT ROW
 ================================ */
-.chat-row {
-  display: flex;
-  gap: 12px;
-  align-items: flex-start;
-}
 
 .msg-avatar {
   width: 40px;
@@ -79,13 +83,13 @@
 .msg-bubble {
   max-width: 70%;
   padding: 14px 18px;
-  border-radius: 0px 10px 10px 10px !important;
-  background: #d8dbea !important;
-  border: none !important;
+  border-radius: 16px;
+  background: #d8dbea;
   font-size: 14.5px;
   line-height: 1.5;
-  word-break: break-word;
-  transition: all 0.2s ease;
+
+  word-wrap: break-word;
+  white-space: pre-wrap;
 }
 
 
@@ -93,21 +97,20 @@
   background: linear-gradient(135deg, #667eeb, #5a67ff);
   color: #fff;
   margin-left: auto;
+  border-radius: 16px 16px 4px 16px;
 }
 
 /* ===============================
    INPUT FIXED AT BOTTOM
 ================================ */
 .input-area {
-  position: sticky;
-  bottom: 0;
+  flex-shrink: 0;
   background: #d7dbef;
   padding: 12px 16px;
   display: flex;
   gap: 12px;
   align-items: center;
   border-radius: 14px;
-  z-index: 10;
 }
 
 .chat-input {
@@ -195,7 +198,8 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    position: fixed;
+    flex-shrink: 0;
+
     margin: 0 12px 0 0;
     gap: 10px;
   }
@@ -305,8 +309,10 @@
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
-  margin-left: 52px;
+  margin-left: 50px;
   animation: fadeIn 0.4s ease forwards;
+  max-width: 70%;
+  align-self: flex-start;
 }
 
 .label-chip {
@@ -329,4 +335,13 @@
 .label-chip:disabled {
   opacity: 0.5;
   cursor: not-allowed;
+}
+
+
+.teach-chat-container {
+  height: calc(100vh - 170px);
+  display: flex;
+  flex-direction: column;
+  margin: 0 4rem 0 0;
+  overflow: hidden; 
 }

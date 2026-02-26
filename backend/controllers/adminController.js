@@ -8,15 +8,36 @@ export const getAdminCustomers = async (req, res) => {
   try {
     const { userId } = req.params;
 
-    const doc = await ChatLead.findOne({ userId });
+    const chatsCollection = mongoose.connection.collection("chats");
+    const chatLeadsCollection = mongoose.connection.collection("chatleads");
 
-    if (!doc) return res.json([]);
+    // 1️⃣ Get unique leads from chats
+    const chats = await chatsCollection.find({ userId }).toArray();
 
-    const customers = doc.leads.map(l => ({
-      leadId: l._id,
-      name: l.name,
-      email: l.email
-    }));
+    const uniqueLeadIds = [...new Set(chats.map(c => c.leadId))];
+
+    // 2️⃣ Get chatleads document
+    const chatLeadsDoc = await chatLeadsCollection.findOne({
+      userId: new mongoose.Types.ObjectId(userId)
+    });
+
+    const leadsArray = chatLeadsDoc?.leads || [];
+
+    // 3️⃣ Merge data
+    const customers = uniqueLeadIds.map(leadId => {
+      const leadInfo = leadsArray.find(
+        l => l._id.toString() === leadId.toString()
+      );
+
+      const chat = chats.find(c => c.leadId === leadId);
+
+      return {
+        leadId,
+        name: leadInfo?.name || "Anonymous",
+        email: leadInfo?.email || "",
+        lastMessageAt: chat?.updated_at || chat?.created_at
+      };
+    });
 
     res.json(customers);
 
@@ -32,19 +53,36 @@ export const getAdminCustomers = async (req, res) => {
 ====================================== */
 export const getAdminChat = async (req, res) => {
   try {
-    const { userId, leadId } = req.query;
+    let { userId, leadId } = req.query;
 
-    // 👇 DIRECT access to "chats" collection
     const chatsCollection = mongoose.connection.collection("chats");
 
-    const chatDoc = await chatsCollection.findOne({
-      userId,
-      leadId
-    });
+    userId = userId?.toString().trim();
+    leadId = decodeURIComponent(leadId?.toString().trim());
+
+    console.log("🔎 Searching Chat For:");
+    console.log("userId:", userId);
+    console.log("leadId:", leadId);
+
+    // 🔥 FIRST get all chats of user
+    const allUserChats = await chatsCollection.find({ userId }).toArray();
+
+    console.log("User Chats Found:", allUserChats.length);
+
+    // 👇👇 ADD THIS LINE HERE
+    console.log("All chats:", allUserChats);
+
+    // 🔥 THEN manually match leadId
+    const chatDoc = allUserChats.find(
+      c => c.leadId?.toString().trim() === leadId
+    );
 
     if (!chatDoc) {
+      console.log("❌ Chat not found for this lead");
       return res.json({ messages: [] });
     }
+
+    console.log("✅ Chat Found!");
 
     res.json({
       messages: chatDoc.messages || []
@@ -75,7 +113,7 @@ export const getDashboardCounts = async (req, res) => {
 
     const todayChats = await chatsCollection.countDocuments({
       userId,
-      createdAt: { $gte: startOfToday }
+      created_at: { $gte: startOfToday }
     });
 
     res.json({
@@ -101,6 +139,7 @@ export const getFilteredCustomers = async (req, res) => {
     const { range } = req.query;
 
     const chatsCollection = mongoose.connection.collection("chats");
+    const chatLeadsCollection = mongoose.connection.collection("chatleads");
 
     let filter = { userId };
     const now = new Date();
@@ -108,30 +147,54 @@ export const getFilteredCustomers = async (req, res) => {
     if (range === "today") {
       const start = new Date();
       start.setHours(0, 0, 0, 0);
-      filter.createdAt = { $gte: start };
+      filter.created_at = { $gte: start };
     }
 
     if (range === "7days") {
-      filter.createdAt = {
+      filter.created_at = {
         $gte: new Date(now - 7 * 24 * 60 * 60 * 1000),
       };
     }
 
     if (range === "30days") {
-      filter.createdAt = {
+      filter.created_at = {
         $gte: new Date(now - 30 * 24 * 60 * 60 * 1000),
       };
     }
 
-    const chats = await chatsCollection
-      .find(filter)
-      .project({ leadId: 1 })
-      .toArray();
+    // 1️⃣ get filtered chats
+    const chats = await chatsCollection.find(filter).toArray();
 
-    // unique customers
-    const unique = [...new Set(chats.map(c => c.leadId))];
+    if (!chats.length) return res.json([]);
 
-    res.json(unique.map(id => ({ leadId: id })));
+    // 2️⃣ unique lead ids
+    const uniqueLeadIds = [...new Set(chats.map(c => c.leadId))];
+
+    // 3️⃣ get chatleads doc
+    const chatLeadsDoc = await chatLeadsCollection.findOne({
+      userId: new mongoose.Types.ObjectId(userId)
+    });
+
+    const leadsArray = chatLeadsDoc?.leads || [];
+
+    // 4️⃣ merge data
+    const customers = uniqueLeadIds.map(leadId => {
+
+      const leadInfo = leadsArray.find(
+        l => l._id.toString() === leadId.toString()
+      );
+
+      const chat = chats.find(c => c.leadId === leadId);
+
+      return {
+        leadId,
+        name: leadInfo?.name || "Anonymous",
+        email: leadInfo?.email || "",
+        lastMessageAt: chat?.updated_at || chat?.created_at
+      };
+    });
+
+    res.json(customers);
 
   } catch (err) {
     console.error("❌ Filter customers error", err);
@@ -139,3 +202,290 @@ export const getFilteredCustomers = async (req, res) => {
   }
 };
 
+
+/* ======================================
+   DASHBOARD STATS
+====================================== */
+export const getDashboardStats = async (req, res) => {
+  try {
+    const { range } = req.query;
+    const chatsCollection = mongoose.connection.collection("chats");
+
+    let filter = {};
+    const now = new Date();
+
+    if (range === "today") {
+      const start = new Date();
+      start.setHours(0, 0, 0, 0);
+      filter.created_at = { $gte: start };
+    }
+
+    if (range === "7days") {
+      filter.created_at = {
+        $gte: new Date(now - 7 * 24 * 60 * 60 * 1000),
+      };
+    }
+
+    if (range === "30days") {
+      filter.created_at = {
+        $gte: new Date(now - 30 * 24 * 60 * 60 * 1000),
+      };
+    }
+
+    const chats = await chatsCollection.find(filter).toArray();
+
+    const totalChats = chats.length;
+    const totalUsers = new Set(chats.map(c => c.userId)).size;
+
+    let totalTokens = 0;
+    chats.forEach(c => {
+      totalTokens += c.total_tokens || 0;
+    });
+
+    res.json({
+      totalUsers,
+      totalChats,
+      totalTokens
+    });
+
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Failed to load dashboard stats" });
+  }
+};
+
+
+/* ======================================
+   USERS LIST
+====================================== */
+export const getAllUsers = async (req, res) => {
+  try {
+    const { filter } = req.query;
+    const chatsCollection = mongoose.connection.collection("chats");
+
+    let dateFilter = {};
+    const now = new Date();
+
+    if (filter === "today") {
+      const start = new Date();
+      start.setHours(0, 0, 0, 0);
+      dateFilter.created_at = { $gte: start };
+    }
+
+    if (filter === "7days") {
+      dateFilter.created_at = {
+        $gte: new Date(now - 7 * 24 * 60 * 60 * 1000),
+      };
+    }
+
+    if (filter === "30days") {
+      dateFilter.created_at = {
+        $gte: new Date(now - 30 * 24 * 60 * 60 * 1000),
+      };
+    }
+
+    const users = await chatsCollection.aggregate([
+      { $match: dateFilter },
+
+      {
+        $group: {
+          _id: "$userId",
+          chatCount: { $sum: 1 },
+          totalTokens: { $sum: "$total_tokens" }
+        }
+      },
+
+      // 👇 convert string to ObjectId
+      {
+        $addFields: {
+          userObjectId: { $toObjectId: "$_id" }
+        }
+      },
+
+      {
+        $lookup: {
+          from: "userdatas",
+          localField: "userObjectId",
+          foreignField: "_id",
+          as: "userInfo"
+        }
+      },
+
+      {
+        $unwind: {
+          path: "$userInfo",
+          preserveNullAndEmptyArrays: true
+        }
+      },
+
+      {
+        $project: {
+          _id: 1,
+          chatCount: 1,
+          totalTokens: 1,
+          name: "$userInfo.name",
+          email: "$userInfo.email"
+        }
+      }
+
+    ]).toArray();
+
+    res.json(users);
+
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Failed to fetch users" });
+  }
+};
+
+
+/* ======================================
+   DELETE USER
+====================================== */
+export const deleteUser = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const objectId = new mongoose.Types.ObjectId(id);
+
+    const chatsCollection = mongoose.connection.collection("chats");
+    const chatLeadsCollection = mongoose.connection.collection("chatleads");
+    const userDatasCollection = mongoose.connection.collection("userdatas");
+    const chatbotSettingsCollection = mongoose.connection.collection("chatbotsettings");
+
+    // 🔥 Delete from all collections
+    await Promise.all([
+      chatsCollection.deleteMany({ userId: id }),                // chats (string userId)
+      chatLeadsCollection.deleteMany({ userId: objectId }),      // chatleads (ObjectId userId)
+      chatbotSettingsCollection.deleteMany({ userId: id }),      // chatbotsettings (string userId)
+      userDatasCollection.deleteOne({ _id: objectId })           // userdatas (_id ObjectId)
+    ]);
+
+    res.json({ success: true });
+
+  } catch (err) {
+    console.error("❌ Delete user full cleanup error:", err);
+    res.status(500).json({ error: "Delete failed" });
+  }
+};
+
+
+/* ======================================
+   USER LEAD ANALYTICS
+====================================== */
+export const getUserLeadsAnalytics = async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const { range } = req.query;
+
+    const chatsCollection = mongoose.connection.collection("chats");
+    const chatLeadsCollection = mongoose.connection.collection("chatleads");
+
+    let filter = { userId };
+    const now = new Date();
+
+    if (range === "today") {
+      const start = new Date();
+      start.setHours(0, 0, 0, 0);
+      filter.created_at = { $gte: start };
+    }
+
+    if (range === "7days") {
+      filter.created_at = {
+        $gte: new Date(now - 7 * 24 * 60 * 60 * 1000),
+      };
+    }
+
+    if (range === "30days") {
+      filter.created_at = {
+        $gte: new Date(now - 30 * 24 * 60 * 60 * 1000),
+      };
+    }
+
+    // 1️⃣ First group from chats
+    const leadsStats = await chatsCollection.aggregate([
+      { $match: filter },
+      {
+        $group: {
+          _id: "$leadId",
+          totalChats: { $sum: 1 },
+          totalTokens: { $sum: "$total_tokens" }
+        }
+      }
+    ]).toArray();
+
+    // 2️⃣ Get chatleads doc for this user
+    const chatLeadsDoc = await chatLeadsCollection.findOne({
+      userId: new mongoose.Types.ObjectId(userId)
+    });
+
+    const leadsArray = chatLeadsDoc?.leads || [];
+
+    // 3️⃣ Merge name/email manually
+    const finalData = leadsStats.map(stat => {
+      const leadInfo = leadsArray.find(
+        l => l._id.toString() === stat._id.toString()
+      );
+
+      return {
+        _id: stat._id,
+        name: leadInfo?.name || "N/A",
+        email: leadInfo?.email || "N/A",
+        totalChats: stat.totalChats,
+        totalTokens: stat.totalTokens
+      };
+    });
+
+    res.json(finalData);
+
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Failed" });
+  }
+};
+
+/* ======================================
+   CHAT ANALYTICS PAGE
+====================================== */
+export const getChatAnalytics = async (req, res) => {
+  try {
+    const { filter } = req.query;
+    const chatsCollection = mongoose.connection.collection("chats");
+
+    let dateFilter = {};
+    const now = new Date();
+
+    if (filter === "today") {
+      const start = new Date();
+      start.setHours(0, 0, 0, 0);
+      dateFilter.created_at = { $gte: start };
+    }
+
+    if (filter === "7days") {
+      dateFilter.created_at = {
+        $gte: new Date(now - 7 * 24 * 60 * 60 * 1000),
+      };
+    }
+
+    if (filter === "30days") {
+      dateFilter.created_at = {
+        $gte: new Date(now - 30 * 24 * 60 * 60 * 1000),
+      };
+    }
+
+    const chats = await chatsCollection.find(dateFilter).toArray();
+
+    let totalTokens = 0;
+    chats.forEach(c => {
+      totalTokens += c.total_tokens || 0;
+    });
+
+    res.json({
+      totalChats: chats.length,
+      totalTokens
+    });
+
+  } catch (err) {
+    res.status(500).json({ error: "Failed analytics" });
+  }
+};

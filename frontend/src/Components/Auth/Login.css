@@ -84,8 +84,8 @@
 .inputIcon {
     position: absolute;
     left: 16px;
-    top: 50%;
-    transform: translateY(-50%);
+    top: 30%;
+    /* transform: translateY(-50%); */
     width: 20px;
     height: 20px;
     opacity: 0.7;

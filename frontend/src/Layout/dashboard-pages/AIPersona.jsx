@@ -183,7 +183,7 @@ const AIPersona = () => {
 
         {/* Tone of Voice */}
         <section className="persona-section">
-          <label>Tone of Voice</label>
+          <label>Tone</label>
           <span>Select how you want the AI to communicate</span>
 
           <select

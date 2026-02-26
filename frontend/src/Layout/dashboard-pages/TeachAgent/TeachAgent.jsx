@@ -140,7 +140,10 @@ const TeachAgent = ({ user }) => {
      AUTO SCROLL
   ====================== */
   useEffect(() => {
-    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+    const el = bottomRef.current;
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth" });
+    }
   }, [messages, typingText]);
 
   /* ======================
@@ -210,7 +213,8 @@ const TeachAgent = ({ user }) => {
 
       <div className="chat-wrapper">
         <div className="chat-area">
-          {messages.map((m, i) => (
+          {/* ===== WELCOME MESSAGE ONLY ===== */}
+          {messages.slice(0, 1).map((m, i) => (
             <div key={i} className="chat-row">
               {m.sender === "bot" && (
                 <img src={BotAvatar} className="msg-avatar" alt="bot" />
@@ -228,6 +232,7 @@ const TeachAgent = ({ user }) => {
             </div>
           )}
 
+          {/* ===== LABELS ALWAYS BELOW WELCOME ===== */}
           {welcomeDone && labels.length > 0 && (
             <div className="chatbot-labels">
               {labels.map((item, i) => (
@@ -250,6 +255,18 @@ const TeachAgent = ({ user }) => {
               ))}
             </div>
           )}
+
+          {/* ===== REST OF CONVERSATION ===== */}
+          {messages.slice(1).map((m, i) => (
+            <div key={i} className="chat-row">
+              {m.sender === "bot" && (
+                <img src={BotAvatar} className="msg-avatar" alt="bot" />
+              )}
+              <div className={`msg-bubble ${m.sender}-msg`}>
+                {m.text}
+              </div>
+            </div>
+          ))}
 
           {showLeadForm && (
             <div className="chat-row">

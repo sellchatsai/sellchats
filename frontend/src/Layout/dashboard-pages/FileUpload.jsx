@@ -4,10 +4,11 @@ import { AiOutlineCloudUpload } from "react-icons/ai";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import "./train-page.css";
+import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 
 const FileUpload = () => {
     const navigate = useNavigate();
-    const { userId: routeUserId } = useParams(); 
+    const { userId: routeUserId } = useParams();
 
     const [file, setFile] = useState(null);
     const [error, setError] = useState("");
@@ -25,7 +26,7 @@ const FileUpload = () => {
             const parsed = JSON.parse(storedUser);
             storedUserId = parsed?._id || parsed?.id || parsed?.userId;
         }
-    } catch {}
+    } catch { }
 
     // ✅ Final userId (route first, fallback localStorage)
     const finalUserId = routeUserId || storedUserId;
@@ -42,7 +43,7 @@ const FileUpload = () => {
                     setUploadDone(true);
                 }
             })
-            .catch(() => {});
+            .catch(() => { });
     }, [finalUserId]);
 
     /* ================= FILE SELECT ================= */
@@ -177,7 +178,20 @@ const FileUpload = () => {
                             </>
                         ) : (
                             <>
-                                <p>{success}</p>
+                                <DotLottieReact
+                                    src="https://lottie.host/6cc8abbe-2c61-479e-9395-d2f912ab45c9/wQ2bvfKrz8.lottie"
+                                    autoplay
+                                    loop={false}
+                                    style={{
+                                        width: 120,
+                                        height: 120,
+                                        margin: "0 auto",
+                                        display: "block"
+                                    }}
+                                />
+
+                                <p className="popup-message">{success}</p>
+
                                 <button
                                     className="popup-box-btn"
                                     onClick={() => setShowPopup(false)}

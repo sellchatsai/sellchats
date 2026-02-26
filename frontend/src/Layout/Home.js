@@ -879,7 +879,7 @@ export default function Home() {
 
             <h2>
               Get more value from <br />
-              your favorite tools
+              your favourite tools
             </h2>
 
             <p>

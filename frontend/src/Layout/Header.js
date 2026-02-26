@@ -39,6 +39,9 @@ function Header({ user, setUser }) {
 
   const isAdminRoute = location.pathname.startsWith("/admin");
 
+  const [trainingProgress, setTrainingProgress] = useState(0);
+  const [showTrainingBar, setShowTrainingBar] = useState(false);
+
 
 
   /* ================= PROFILE POPUP ================= */
@@ -62,6 +65,39 @@ function Header({ user, setUser }) {
       document.removeEventListener("mousedown", handleOutsideClick);
     };
   }, [showProfile]);
+
+
+  useEffect(() => {
+    const trainingActive = localStorage.getItem("trainingActive");
+    const startTime = localStorage.getItem("trainingStartTime");
+
+    if (!trainingActive || !startTime) return;
+
+    setShowTrainingBar(true);
+
+    const totalTime = 300; // 5 min
+    const interval = setInterval(() => {
+      const elapsed = Math.floor((Date.now() - startTime) / 1000);
+      const percentage = Math.min(
+        Math.floor((elapsed / totalTime) * 100),
+        100
+      );
+
+      setTrainingProgress(percentage);
+
+      if (percentage >= 100) {
+        clearInterval(interval);
+        localStorage.removeItem("trainingActive");
+        localStorage.removeItem("trainingStartTime");
+
+        setTimeout(() => {
+          setShowTrainingBar(false);
+        }, 800);
+      }
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, []);
 
 
   /* ================= LOGOUT ================= */
@@ -261,8 +297,27 @@ function Header({ user, setUser }) {
             PUBLISH
           </div>
         </div>
+
       )}
 
+     {showTrainingBar && (
+  <div className="training-wrapper">
+    <div className="training-bar-container">
+
+      {/* Fill Layer */}
+      <div
+        className="training-bar-fill"
+        style={{ width: `${trainingProgress}%` }}
+      />
+
+      {/* Text Layer */}
+      <div className="training-bar-text">
+        {trainingProgress}% • Website Upload & Training in Progress...
+      </div>
+
+    </div>
+  </div>
+)}
     </>
   );
 }
