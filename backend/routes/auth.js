@@ -22,8 +22,8 @@ const BACKEND_CALLBACK =
 
 const FRONTEND_URL =
   process.env.NODE_ENV === "production"
-    ? "http://localhost:3000"
-    : "http://localhost:3000";
+    ? "https://sellchats.com"
+    : "https://sellchats.com";
 
 /* ============================================================
    NORMAL LOGIN & REGISTER

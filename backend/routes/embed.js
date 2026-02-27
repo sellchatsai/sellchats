@@ -10,7 +10,7 @@ router.get("/:userId.js", async (req, res) => {
   const alignment = setting?.alignment === "left" ? "left" : "right";
 
   const FRONTEND_URL =
-    process.env.FRONTEND_URL || "http://localhost:3000";
+    process.env.FRONTEND_URL || "https://sellchats.com";
   const BACKEND_URL =
     process.env.BACKEND_URL || "https://api.sellchats.com";
 
