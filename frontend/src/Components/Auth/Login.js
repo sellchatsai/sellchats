@@ -22,7 +22,7 @@ const Login = ({ setUser }) => {
   const onSubmit = async (data) => {
     try {
       const response = await axios.post(
-        "http://localhost:4000/api/auth/login",
+        "https://api.sellchats.com/api/auth/login",
         data,
         { withCredentials: true }
       );
@@ -42,7 +42,7 @@ const Login = ({ setUser }) => {
   };
 
   const googleLogin = async () => {
-    const res = await axios.get("http://localhost:4000/api/auth/google");
+    const res = await axios.get("https://api.sellchats.com/api/auth/google");
     window.location.href = res.data.url;
   };
 

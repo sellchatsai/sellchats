@@ -72,7 +72,7 @@ const Sidebar = ({ open, setOpen }) => {
           onClick={async () => {
             try {
               const res = await fetch(
-                `http://localhost:4000/api/chatbot/${userId}`
+                `https://api.sellchats.com/api/chatbot/${userId}`
               );
               const data = await res.json();
 

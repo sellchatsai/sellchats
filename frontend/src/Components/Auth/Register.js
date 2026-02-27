@@ -23,7 +23,7 @@ const Register = () => {
   const onSubmit = async (data) => {
     try {
       const response = await axios.post(
-        "http://localhost:4000/api/auth/register",
+        "https://api.sellchats.com/api/auth/register",
         data,
         { withCredentials: true }
       );

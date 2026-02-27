@@ -36,7 +36,7 @@ const FileUpload = () => {
         if (!finalUserId) return;
 
         axios
-            .get(`http://localhost:4000/api/pdf/status/${finalUserId}`)
+            .get(`https://api.sellchats.com/api/pdf/status/${finalUserId}`)
             .then((res) => {
                 if (res.data?.hasPdf) {
                     setFile({ name: res.data.pdfName });
@@ -87,7 +87,7 @@ const FileUpload = () => {
 
         try {
             await axios.post(
-                "http://localhost:4000/api/pdf/upload",
+                "https://api.sellchats.com/api/pdf/upload",
                 formData,
                 { headers: { "Content-Type": "multipart/form-data" } }
             );

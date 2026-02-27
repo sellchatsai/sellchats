@@ -44,7 +44,7 @@ const CustomChatPage = () => {
 
 
   const navigate = useNavigate();
-  const apiBase = "http://localhost:4000";
+  const apiBase = "https://api.sellchats.com";
   const fileInputRef = useRef(null);
 
   /* =========================

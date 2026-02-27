@@ -15,7 +15,7 @@ const ResetPassword = () => {
 
   const reset = async () => {
     try {
-      await axios.post("http://localhost:4000/api/auth/reset-password", {
+      await axios.post("https://api.sellchats.com/api/auth/reset-password", {
         email,
         password,
       });

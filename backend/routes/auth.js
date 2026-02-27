@@ -17,8 +17,8 @@ let otpStore = {};
 
 const BACKEND_CALLBACK =
   process.env.NODE_ENV === "production"
-    ? "http://localhost:4000/api/auth/google/callback"
-    : "http://localhost:4000/api/auth/google/callback";
+    ? "https://api.sellchats.com/api/auth/google/callback"
+    : "https://api.sellchats.com/api/auth/google/callback";
 
 const FRONTEND_URL =
   process.env.NODE_ENV === "production"

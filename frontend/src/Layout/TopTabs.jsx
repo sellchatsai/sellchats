@@ -19,7 +19,7 @@ const TopTabs = () => {
       }
 
       const res = await axios.get(
-        `http://localhost:4000/api/chatbot/knowledge-status/${userId}`
+        `https://api.sellchats.com/api/chatbot/knowledge-status/${userId}`
       );
 
       if (res.data.hasKnowledge) {

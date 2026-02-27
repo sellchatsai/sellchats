@@ -3,7 +3,7 @@ import axios from "axios";
 import { useOutletContext } from "react-router-dom";
 import "./account.css";
 
-const API = "http://localhost:4000";
+const API = "https://api.sellchats.com";
 
 /* ================= ROW ================= */
 const Row = ({ label, children, action }) => {

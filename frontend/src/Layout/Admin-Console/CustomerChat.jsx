@@ -14,7 +14,7 @@ const CustomerChat = () => {
   const [loading, setLoading] = useState(true);
 
   const bottomRef = useRef(null);
-  const apiBase = "http://localhost:4000";
+  const apiBase = "https://api.sellchats.com";
 
   useEffect(() => {
     const fetchChat = async () => {
