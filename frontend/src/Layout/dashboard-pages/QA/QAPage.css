@@ -46,6 +46,7 @@
   padding: 14px;
   border-radius: 10px;
   box-shadow: 0 4px 16px rgba(12, 22, 46, 0.06);
+  overflow: hidden;
 }
 
 .qa-card-left {
@@ -65,12 +66,22 @@
 
 .qa-card-middle {
   flex: 1;
+  min-width: 0;
+  word-break: break-word;
+  overflow-wrap: break-word;
 }
 
 .qa-question {
   font-weight: 600;
   font-size: 16px;
   margin-bottom: 6px;
+}
+
+.qa-question,
+.qa-answer {
+  word-break: break-word;
+  overflow-wrap: break-word;
+  white-space: pre-wrap;
 }
 
 .qa-answer {
