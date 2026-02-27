@@ -47,7 +47,7 @@ router.post("/ingest-website", async (req, res) => {
       console.log("➡️ Calling Python API...");
 
       const pyResponse = await axios.post(
-        "https://pinecone-store-api.onrender.com/v1/ingest",
+        "https://ai.sellchats.com/v1/ingest",
         { userId, source },
         {
           timeout: 30000,

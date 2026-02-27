@@ -89,7 +89,7 @@ router.post("/upload", upload.single("pdf"), async (req, res) => {
     formData.append("userId", userId);
 
     axios.post(
-      "https://pinecone-store-api.onrender.com/v1/ingest/pdf",
+      "https://store.sellchats.com/v1/ingest/pdf",
       formData,
       { headers: formData.getHeaders() }
     )
