@@ -16,42 +16,44 @@ import qaRoutes from "./routes/qaRoutes.js";
 import personaRoutes from "./routes/personaRoutes.js";
 import pdfRoutes from "./routes/pdfRoutes.js";
 import adminRoutes from "./routes/adminRoutes.js";
-import contactRoute from "./routes/contact.js"
+import contactRoute from "./routes/contact.js";
 import adminAuthRoutes from "./routes/adminAuthRoutes.js";
 
 dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT || 4000;
+const PORT = process.env.PORT || 5000;
 
+/* ======================================================
+                    CORS CONFIG (FIXED)
+====================================================== */
 
 const allowedOrigins = [
   "https://sellchats.com",
   "https://www.sellchats.com",
   "https://ai.sellchats.com",
   "https://api.vidoprompt.com",
-  "https://sellchats-api.com",
   "https://store.sellchats.com"
 ];
 
-const corsOptions = {
-  origin: function (origin, callback) {
-    if (!origin) return callback(null, true);
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      // Allow Postman / server-to-server calls
+      if (!origin) return callback(null, true);
 
-    if (
-      allowedOrigins.includes(origin) ||
-      origin.endsWith(".vercel.app")
-    ) {
-      return callback(null, true);
-    }
+      if (
+        allowedOrigins.includes(origin) ||
+        origin.endsWith(".vercel.app")
+      ) {
+        return callback(null, origin); // ✅ Return exact origin (NO wildcard)
+      }
 
-    return callback(new Error("Not allowed by CORS"));
-  },
-  credentials: true,
-};
-
-app.use(cors(corsOptions));
-app.options("*", cors(corsOptions));
+      return callback(new Error("Not allowed by CORS"));
+    },
+    credentials: true
+  })
+);
 
 /* ======================================================
                  MIDDLEWARES
@@ -61,7 +63,7 @@ app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ extended: true, limit: "10mb" }));
 app.use(cookieParser());
 
-/* Allow iframe embedding (optional) */
+/* Allow iframe embedding */
 app.use((req, res, next) => {
   res.setHeader("X-Frame-Options", "ALLOWALL");
   next();
@@ -78,7 +80,7 @@ connectDB();
 ====================================================== */
 
 app.get("/", (req, res) => {
-  res.send("🚀 Chatbot Backend running");
+  res.json({ message: "🚀 Chatbot Backend running" });
 });
 
 app.use("/api/auth", authRoutes);
@@ -93,7 +95,6 @@ app.use("/api/pdf", pdfRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api/contact", contactRoute);
 app.use("/api/admin-auth", adminAuthRoutes);
-
 
 app.use(
   "/uploads",
