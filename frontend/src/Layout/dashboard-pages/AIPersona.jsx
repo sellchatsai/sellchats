@@ -10,6 +10,8 @@ import { useOutletContext } from "react-router-dom";
 import aiIcon from "../../image/AI PERSONA.svg";
 import "./AIPersona.css";
 import "./train-page.css";
+import { DotLottieReact } from "@lottiefiles/dotlottie-react";
+import successAnimation from "../../image/RMxOTfxH4P.lottie";
 
 const AIPersona = () => {
   const { setSidebarOpen } = useOutletContext();
@@ -281,7 +283,7 @@ const AIPersona = () => {
                     onClick={() => {
                       setPersona({
                         ...persona,
-                        responseLength: opt.value, 
+                        responseLength: opt.value,
                       });
                       markDirty();
                     }}
@@ -319,12 +321,25 @@ const AIPersona = () => {
 
             {saveStatus === "success" && (
               <>
-                <h3>Successfully Saved</h3>
+                <DotLottieReact
+                  src={successAnimation}
+                  autoplay
+                  loop={false}
+                  style={{
+                    width: 130,
+                    height: 130,
+                    margin: "0 auto",
+                    display: "block"
+                  }}
+                />
+
+                <h3 style={{ marginTop: "10px" }}>Successfully Saved</h3>
+
                 <button
                   className="open-btn"
                   onClick={() => {
                     setShowSaveModal(false);
-                    setSaveStatus("loading"); 
+                    setSaveStatus("loading");
                   }}
                 >
                   OK

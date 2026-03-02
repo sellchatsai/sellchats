@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 import ChatBotDrawer from "../Components/Auth/ChatBotDrawer";
 import "./CustomChatPage.css";
 import ColorPicker from "../Components/Auth/ColorPicker";
+import { DotLottieReact } from "@lottiefiles/dotlottie-react";
+import successAnimation from "../image/RMxOTfxH4P.lottie";
 
 /* =========================
    DEFAULT AVATARS
@@ -352,7 +354,19 @@ const CustomChatPage = () => {
             {/* ✅ SUCCESS STATE */}
             {popup.stage === "success" && (
               <>
-                <h3>🎉 Successfully Saved!</h3>
+                <DotLottieReact
+                  src={successAnimation}
+                  autoplay
+                  loop={false}
+                  style={{
+                    width: 140,
+                    height: 140,
+                    margin: "0 auto",
+                    display: "block"
+                  }}
+                />
+
+                <h3 style={{ marginTop: "10px" }}>Successfully Saved!</h3>
                 <p>Your chatbot is ready to publish.</p>
 
                 <div className="popup-actions">

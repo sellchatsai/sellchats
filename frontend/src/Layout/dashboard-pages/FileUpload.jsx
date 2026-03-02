@@ -5,6 +5,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import "./train-page.css";
 import { DotLottieReact } from "@lottiefiles/dotlottie-react";
+import successAnimation from "../../image/RMxOTfxH4P.lottie";
 
 const FileUpload = () => {
     const navigate = useNavigate();
@@ -45,6 +46,14 @@ const FileUpload = () => {
             })
             .catch(() => { });
     }, [finalUserId]);
+
+    useEffect(() => {
+        const preload = document.createElement("link");
+        preload.rel = "preload";
+        preload.as = "fetch";
+        preload.href = successAnimation;
+        document.head.appendChild(preload);
+    }, []);
 
     /* ================= FILE SELECT ================= */
     const handleFileChange = (e) => {
@@ -179,7 +188,7 @@ const FileUpload = () => {
                         ) : (
                             <>
                                 <DotLottieReact
-                                    src="https://lottie.host/6cc8abbe-2c61-479e-9395-d2f912ab45c9/wQ2bvfKrz8.lottie"
+                                    src={successAnimation}
                                     autoplay
                                     loop={false}
                                     style={{
