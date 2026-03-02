@@ -28,13 +28,16 @@ const PORT = process.env.PORT || 5000;
                     CORS CONFIG (FIXED)
 ====================================================== */
 
-const allowedOrigins = [
-  "https://sellchats.com",
-  "https://www.sellchats.com",
-  "https://ai.sellchats.com",
-  "https://api.vidoprompt.com",
-  "https://store.sellchats.com"
-];
+app.use(cors({
+  origin: [
+    "https://sellchats.com",
+    "https://www.sellchats.com",
+    "https://ai.sellchats.com",
+    "https://api.vidoprompt.com",
+    "https://store.sellchats.com"
+  ],
+  credentials: true
+}));
 
 app.use(
   cors({
