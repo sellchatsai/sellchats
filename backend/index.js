@@ -27,21 +27,21 @@ const PORT = process.env.PORT || 4000;
 
 const allowedOrigins = [
   "https://sellchats.com",
-  "https://sellchats.com",
+  "https://www.sellchats.com",
+  "https://api.sellchats.com",
+  "http://localhost:3000"
 ];
 
 app.use(
   cors({
     origin: function (origin, callback) {
-      // allow server-to-server, Postman, curl
       if (!origin) return callback(null, true);
 
-      // allow known origins
       if (
         allowedOrigins.includes(origin) ||
         origin.endsWith(".vercel.app")
       ) {
-        return callback(null, true);
+        return callback(null, origin); // ✅ return exact origin
       }
 
       return callback(new Error("Not allowed by CORS"));
