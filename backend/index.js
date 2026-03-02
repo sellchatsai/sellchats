@@ -27,7 +27,11 @@ const PORT = process.env.PORT || 4000;
 
 const allowedOrigins = [
   "https://sellchats.com",
-  "https://www.sellchats.com"
+  "https://www.sellchats.com",
+  "https://ai.sellchats.com",
+  "https://api.vidoprompt.com",
+  "https://sellchats-api.com",
+  "https://store.sellchats.com"
 ];
 
 const corsOptions = {
