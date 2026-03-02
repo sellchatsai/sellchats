@@ -40,7 +40,7 @@ app.use(
   cors({
     origin: function (origin, callback) {
       // Allow Postman / server-to-server calls
-      if (!origin) return callback(null, true);
+      if (!origin) return callback(null, false);
 
       if (
         allowedOrigins.includes(origin) ||
