@@ -48,7 +48,10 @@ export default function ChatBotDrawer({
 
 
 
-
+  const validateEmailFormat = (email) => {
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
+    return regex.test(email);
+  };
 
 
 
@@ -65,27 +68,27 @@ export default function ChatBotDrawer({
   }, [userId, apiBase]);
 
   /* ================= WELCOME MESSAGE ================= */
-useEffect(() => {
-  if (!showChat) return;
+  useEffect(() => {
+    if (!showChat) return;
 
-  const welcomeText = firstMessage || "Hi there 👋 I'm your assistant!";
+    const welcomeText = firstMessage || "Hi there 👋 I'm your assistant!";
 
-  setConversation([]);
-  setWelcomeDone(false);
+    setConversation([]);
+    setWelcomeDone(false);
 
-  setTimeout(() => {
-    typeText(
-      welcomeText,
-      (typed) => {
-        setConversation([{ from: "bot", text: typed }]);
-      },
-      () => {
-        setWelcomeDone(true);
-      }
-    );
-  }, 200);
+    setTimeout(() => {
+      typeText(
+        welcomeText,
+        (typed) => {
+          setConversation([{ from: "bot", text: typed }]);
+        },
+        () => {
+          setWelcomeDone(true);
+        }
+      );
+    }, 200);
 
-}, [showChat, firstMessage]);
+  }, [showChat, firstMessage]);
 
 
 
@@ -288,6 +291,9 @@ useEffect(() => {
 
                       if (!leadEmail.trim()) {
                         setEmailError("Email is required");
+                        hasError = true;
+                      } else if (!validateEmailFormat(leadEmail)) {
+                        setEmailError("Please enter a valid email address");
                         hasError = true;
                       }
 

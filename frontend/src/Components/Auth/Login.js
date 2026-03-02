@@ -63,29 +63,39 @@ const Login = ({ setUser }) => {
             {/* <h2 className="authTitle">Log In</h2> */}
 
             {/* EMAIL */}
-            <div className="inputGroup iconInput">
-              <img src={emailIcon} className="inputIcon" alt="email" />
-              <input
-                type="email"
-                placeholder="Your email"
-                {...register("email", { required: "Email is required" })}
-              />
+            <div className="inputGroup">
+
+              <div className="iconInput">
+                <img src={emailIcon} className="inputIcon" alt="email" />
+                <input
+                  type="email"
+                  placeholder="Your email"
+                  {...register("email", { required: "Email is required" })}
+                />
+              </div>
+
               {errors.email && (
                 <p className="error">{errors.email.message}</p>
               )}
+
             </div>
 
             {/* PASSWORD */}
-            <div className="inputGroup iconInput">
-              <img src={passwordIcon} className="inputIcon" alt="password" />
-              <input
-                type="password"
-                placeholder="Password"
-                {...register("password", { required: "Password is required" })}
-              />
+            <div className="inputGroup">
+
+              <div className="iconInput">
+                <img src={passwordIcon} className="inputIcon" alt="password" />
+                <input
+                  type="password"
+                  placeholder="Password"
+                  {...register("password", { required: "Password is required" })}
+                />
+              </div>
+
               {errors.password && (
                 <p className="error">{errors.password.message}</p>
               )}
+
             </div>
 
             <p className="forgot">

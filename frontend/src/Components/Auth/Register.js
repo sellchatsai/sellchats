@@ -58,55 +58,77 @@ const Register = () => {
           <form className="authForm" onSubmit={handleSubmit(onSubmit)}>
 
             {/* <h2 className="authTitle">Log In</h2> */}
-            <div className="inputGroup iconInput">
-              <img src={userIcon} className="inputIcon" alt="full name" />
-              <input
-                type="text"
-                placeholder='User Name'
-                {...register('name', {
-                  required: 'Name is required',
-                  minLength: {
-                    value: 3,
-                    message: 'Name must be at least 3 characters',
-                  },
-                })}
-              />
-              {errors.name && <div className="error">{errors.name.message}</div>}
+            <div className="inputGroup">
+
+              <div className="iconInput">
+                <img src={userIcon} className="inputIcon" alt="full name" />
+                <input
+                  type="text"
+                  placeholder="User Name"
+                  {...register("name", {
+                    required: "Name is required",
+                    minLength: {
+                      value: 3,
+                      message: "Name must be at least 3 characters",
+                    },
+                  })}
+                />
+              </div>
+
+              {errors.name && (
+                <div className="error">{errors.name.message}</div>
+              )}
+
             </div>
 
             {/* EMAIL */}
-            <div className="inputGroup iconInput">
-              <img src={emailIcon} className="inputIcon" alt="email" />
-              <input
-                type="email"
-                placeholder="Your email"
-                {...register('email', {
-                  required: 'Email is required',
-                  pattern: {
-                    value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                    message: 'Invalid email format',
-                  },
-                })}
-              />
-              {errors.email && <div className="error">{errors.email.message}</div>}
+            {/* EMAIL */}
+            <div className="inputGroup">
+
+              <div className="iconInput">
+                <img src={emailIcon} className="inputIcon" alt="email" />
+                <input
+                  type="email"
+                  placeholder="Your email"
+                  {...register("email", {
+                    required: "Email is required",
+                    pattern: {
+                      value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                      message: "Invalid email format",
+                    },
+                  })}
+                />
+              </div>
+
+              {errors.email && (
+                <div className="error">{errors.email.message}</div>
+              )}
+
             </div>
 
 
             {/* PASSWORD */}
-            <div className="inputGroup iconInput">
-              <img src={passwordIcon} className="inputIcon" alt="password" />
-              <input
-                type="password"
-                placeholder="Password"
-                {...register('password', {
-                  required: 'Password is required',
-                  minLength: {
-                    value: 6,
-                    message: 'Password must be at least 6 characters',
-                  },
-                })}
-              />
-              {errors.password && <div className="error">{errors.password.message}</div>}
+            <div className="inputGroup">
+
+              <div className="iconInput">
+                <img src={passwordIcon} className="inputIcon" alt="password" />
+                <input
+                  type="password"
+                  placeholder="Password"
+                  {...register("password", {
+                    required: "Password is required",
+                    minLength: {
+                      value: 6,
+                      message: "Password must be at least 6 characters",
+                    },
+                  })}
+                />
+              </div>
+
+              {errors.password && (
+                <div className="error">{errors.password.message}</div>
+              )}
+
             </div>
 
             <button type="submit" className="submitButton">Register</button>

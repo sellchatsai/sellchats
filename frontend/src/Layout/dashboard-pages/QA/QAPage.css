@@ -42,15 +42,12 @@
 .qa-card {
   display: flex;
   align-items: flex-start;
+  gap: 13px;
   background: #fff;
   padding: 14px;
   border-radius: 10px;
   box-shadow: 0 4px 16px rgba(12, 22, 46, 0.06);
   overflow: hidden;
-}
-
-.qa-card-left {
-  margin-right: 12px;
 }
 
 .qa-icon {
@@ -145,4 +142,17 @@
 
 .qa-back-btn:hover {
   background: #e0e0e0;
+}
+
+
+@media screen and (max-width: 768px) {
+  .qa-edit {
+    padding: 6px 8px;
+    font-size: 14px;
+  }
+
+  .qa-delete {
+    padding: 6px 8px;
+    font-size: 14px;
+  }
 }

@@ -18,7 +18,7 @@
   padding: 5px 12px;
   border-radius: 8px;
   cursor: pointer;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
 
 .fu-title {
@@ -38,7 +38,7 @@
   background: white;
   padding: 24px;
   border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   margin-bottom: 25px;
 }
 
@@ -97,7 +97,7 @@
 }
 
 .fu-success {
-  color: green;
+  color: #1e40af;
 }
 
 /* TEXTAREA CARD */
@@ -130,7 +130,7 @@
 }
 
 .fu-save-btn:hover {
-  background: #43a047;
+  background: #1e40af;
 }
 
 .fu-remove-btn {
@@ -150,27 +150,27 @@
 
 
 .fu-file-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 button.fu-cancel-btn {
-    margin-top: 16px;
-    padding: 10px 18px;
-    background: #4f46e5;
-    color: #fff;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
+  margin-top: 16px;
+  padding: 10px 18px;
+  background: #4f46e5;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
 }
 
 button.popup-box-btn {
-    margin-top: 16px;
-    padding: 10px 18px;
-    background: #4f46e5;
-    color: #fff;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
+  margin-top: 16px;
+  padding: 10px 18px;
+  background: #4f46e5;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
 }

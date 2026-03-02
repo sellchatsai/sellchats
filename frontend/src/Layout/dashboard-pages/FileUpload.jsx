@@ -120,7 +120,7 @@ const FileUpload = () => {
 
                 <div>
                     <h2>FILE</h2>
-                    <p>Upload files to train your Agent</p>
+                    <p>Upload files to train your agent</p>
                 </div>
             </div>
 

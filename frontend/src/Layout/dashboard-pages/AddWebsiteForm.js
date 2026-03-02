@@ -11,27 +11,23 @@ const AddWebsiteForm = ({ user }) => {
   const [url, setUrl] = useState("");
   const [storedWebsite, setStoredWebsite] = useState(null);
   const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [justUploaded, setJustUploaded] = useState(false);
 
-
-  // 🔹 original userId logic (NO REMOVE)
   const propUserId = user?._id || user?.id || user?.userId;
 
-  // 🔹 fallback localStorage
   let storedUserId = null;
   try {
     const storedUser = localStorage.getItem("user");
     if (storedUser) {
       const parsed = JSON.parse(storedUser);
-      storedUserId =
-        parsed?._id || parsed?.id || parsed?.userId;
+      storedUserId = parsed?._id || parsed?.id || parsed?.userId;
     }
-  } catch { }
+  } catch {}
 
-  // ✅ final userId (priority: route > prop > localStorage)
   const finalUserId = routeUserId || propUserId || storedUserId;
 
-  /* ================= LOAD FROM DB ================= */
+  /* ================= LOAD EXISTING WEBSITE ================= */
   useEffect(() => {
     if (!finalUserId) return;
 
@@ -44,42 +40,63 @@ const AddWebsiteForm = ({ user }) => {
           setUrl(website);
         }
       })
-      .catch(() => { });
+      .catch(() => {});
   }, [finalUserId]);
 
-  /* ================= CRAWL WEBSITE ================= */
+  /* ================= URL VALIDATION ================= */
+  const isValidUrl = (value) => {
+    try {
+      const parsed = new URL(value);
+      return (
+        ["http:", "https:"].includes(parsed.protocol) &&
+        parsed.hostname.includes(".")
+      );
+    } catch {
+      return false;
+    }
+  };
+
+  /* ================= HANDLE UPLOAD ================= */
   const handleCrawl = async () => {
-    if (!url.trim()) {
-      setError("⚠️ Please enter a website URL");
+    const cleanUrl = url.trim();
+
+    if (!cleanUrl) {
+      setError("Please enter a website URL.");
+      return;
+    }
+
+    if (!isValidUrl(cleanUrl)) {
+      setError("Enter a valid URL (must start with http:// or https://).");
       return;
     }
 
     try {
+      setLoading(true);
       setError("");
-      setSuccess("");
+      setJustUploaded(false);
 
       await axios.post(
         "https://api.sellchats.com/api/webhook/ingest-website",
         {
           userId: finalUserId,
-          source: url.trim(),
+          source: cleanUrl,
         }
       );
 
-      // 🔥 Trigger Header Training Bar
+      setStoredWebsite(cleanUrl);
+      setJustUploaded(true);
+
       localStorage.setItem("trainingActive", "true");
       localStorage.setItem("trainingStartTime", Date.now());
-
       window.dispatchEvent(new Event("trainingStarted"));
-
-      // optional success message
-      setSuccess("✅ Website uploaded successfully!");
 
     } catch (err) {
       setError(
         err?.response?.data?.message ||
-        "❌ Failed to upload website"
+        "Failed to upload website. Please try again."
       );
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -92,7 +109,6 @@ const AddWebsiteForm = ({ user }) => {
         >
           ←
         </button>
-        -
         <div>
           <h2>LINK</h2>
           <p>Add website URLs to train your Agent</p>
@@ -101,7 +117,9 @@ const AddWebsiteForm = ({ user }) => {
 
       <div className="link-card">
         <label className="label-text">Enter a URL</label>
-        <p className="help-text">Provide a URL for your agent to analyze</p>
+        <p className="help-text">
+          Provide a valid website URL for your agent to analyze.
+        </p>
 
         <input
           type="text"
@@ -111,28 +129,36 @@ const AddWebsiteForm = ({ user }) => {
           onChange={(e) => setUrl(e.target.value)}
         />
 
+        {/* SUCCESS / LOCK MESSAGE */}
         {storedWebsite && (
-          <p className="info-text">
-            🔒 Website uploaded successfully.
-          </p>
+          <div className="success-box">
+            {justUploaded ? (
+              <>
+                ✅ Website uploaded successfully.
+                <br />
+                Training has started. You will be notified once completed.
+              </>
+            ) : (
+              <>
+                🔒 Website connected successfully.
+                <br />
+                If you need to update it, please contact Support.
+              </>
+            )}
+          </div>
         )}
 
+        {/* BUTTON */}
         <button
-          className="crawl-btn"
+          className={`crawl-btn ${storedWebsite ? "disabled-btn" : ""}`}
           onClick={handleCrawl}
-          disabled={!!storedWebsite}
-          style={{
-            opacity: storedWebsite ? 0.5 : 1,
-            cursor: storedWebsite ? "not-allowed" : "pointer"
-          }}
+          disabled={!!storedWebsite || loading}
         >
-          Upload
+          {loading ? "Uploading..." : "Upload"}
         </button>
 
         {error && <p className="error-msg">{error}</p>}
-        {success && <p className="success-msg">{success}</p>}
       </div>
-
     </div>
   );
 };

@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useOutletContext } from "react-router-dom";
 import "./account.css";
+import PhoneInput from "react-phone-input-2";
+import "react-phone-input-2/lib/style.css";
 
 const API = "https://api.sellchats.com";
 
@@ -80,6 +82,17 @@ const Account = () => {
         if (editField === "name") showSuccess("Changed Successfully");
         if (editField === "phone") showSuccess("Mobile number updated successfully");
         if (editField === "email") showSuccess("Email updated successfully");
+      }
+
+      if (editField === "phone") {
+
+        const phoneRegex = /^[1-9]\d{9,14}$/;
+
+        if (!phoneRegex.test(editValue)) {
+          alert("Please enter valid phone number with country code");
+          setLoading(false);
+          return;
+        }
       }
 
       if (editField === "website") {
@@ -234,7 +247,28 @@ const Account = () => {
         }
       >
         {editField === "phone" ? (
-          <input value={editValue} onChange={(e) => setEditValue(e.target.value)} />
+          <PhoneInput
+            country={"in"}
+            value={editValue}
+            onChange={(phone) => setEditValue(phone)}
+            enableSearch={true}
+            countryCodeEditable={false}
+            disableDropdown={false}
+            inputStyle={{
+              width: "100%",
+              height: "42px",
+              fontSize: "15px",
+              borderRadius: "6px",
+              border: "1px solid #ddd"
+            }}
+            buttonStyle={{
+              border: "1px solid #ddd",
+              borderRadius: "6px 0 0 6px"
+            }}
+            containerStyle={{
+              width: "100%"
+            }}
+          />
         ) : (
           user.phone || "-"
         )}

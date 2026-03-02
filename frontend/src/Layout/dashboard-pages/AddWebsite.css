@@ -202,3 +202,17 @@ p.info-text {
   font-weight: 500;
   margin-bottom: 15px;
 }
+
+.success-box {
+  margin-top: 15px;
+  padding: 12px;
+  background: #e6f9ed;
+  color: #137a3d;
+  border-radius: 8px;
+  font-weight: 500;
+}
+
+.disabled-btn {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

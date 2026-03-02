@@ -51,7 +51,7 @@ const KnowledgeBase = () => {
         <div className="kb-icon blue"><AiOutlineFolderOpen /></div>
         <div className="kb-info">
           <h3>FILE</h3>
-          <p>Upload files to train your Agent</p>
+          <p>Upload files to train your agent</p>
         </div>
         <div className="kb-arrow">&#8250;</div>
       </div>
@@ -65,7 +65,7 @@ const KnowledgeBase = () => {
         <div className="kb-icon yellow"><FaLink /></div>
         <div className="kb-info">
           <h3>LINK</h3>
-          <p>Add website URLs to train your Agent with dynamic information</p>
+          <p>Add website urls to train your agent with dynamic information</p>
         </div>
         <div className="kb-arrow">&#8250;</div>
       </div>

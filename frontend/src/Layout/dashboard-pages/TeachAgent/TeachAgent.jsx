@@ -26,8 +26,6 @@ const TeachAgent = ({ user }) => {
   ====================== */
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
-  const [thinking, setThinking] = useState(false);
-  const [typingText, setTypingText] = useState("");
   const [isTypewriting, setIsTypewriting] = useState(false);
 
   /* LEAD STATES */
@@ -85,21 +83,30 @@ const TeachAgent = ({ user }) => {
   /* ======================
      TYPEWRITER
   ====================== */
-  const typeWriterEffect = (text, onDone) => {
-    clearInterval(typingIntervalRef.current);
-    setIsTypewriting(true);
-    setTypingText("");
-
+  const typeWriterEffect = (fullText, messageIndex) => {
     let index = 0;
+    setIsTypewriting(true);
+
+    clearInterval(typingIntervalRef.current);
+
     typingIntervalRef.current = setInterval(() => {
       index++;
-      setTypingText(text.slice(0, index));
 
-      if (index >= text.length) {
+      setMessages((prev) => {
+        const updated = [...prev];
+        if (!updated[messageIndex]) return prev;
+
+        updated[messageIndex] = {
+          ...updated[messageIndex],
+          text: fullText.slice(0, index),
+        };
+
+        return updated;
+      });
+
+      if (index >= fullText.length) {
         clearInterval(typingIntervalRef.current);
         setIsTypewriting(false);
-        setTypingText("");
-        onDone?.();
       }
     }, 30);
   };
@@ -110,10 +117,13 @@ const TeachAgent = ({ user }) => {
   const startGreeting = useCallback((name) => {
     const msg = `Hi ${name} 👋 I'm your assistant!`;
 
-    typeWriterEffect(msg, () => {
-      setMessages([{ sender: "bot", text: msg }]);
-      setWelcomeDone(true);
-    });
+    setMessages([{ sender: "bot", text: "" }]);
+
+    setTimeout(() => {
+      typeWriterEffect(msg, 0);
+    }, 200);
+
+    setWelcomeDone(true);
   }, []);
 
   /* ======================
@@ -129,10 +139,14 @@ const TeachAgent = ({ user }) => {
       startGreeting(storedLeadName);
     } else {
       const msg = "Hi there 👋 I'm your assistant!";
-      typeWriterEffect(msg, () => {
-        setMessages([{ sender: "bot", text: msg }]);
-        setWelcomeDone(true);
-      });
+
+      setMessages([{ sender: "bot", text: "" }]);
+
+      setTimeout(() => {
+        typeWriterEffect(msg, 0);
+      }, 200);
+
+      setWelcomeDone(true);
     }
   }, [startGreeting]);
 
@@ -144,19 +158,24 @@ const TeachAgent = ({ user }) => {
     if (el) {
       el.scrollIntoView({ behavior: "smooth" });
     }
-  }, [messages, typingText]);
+  }, [messages]);
 
   /* ======================
      SEND MESSAGE
   ====================== */
   const sendMessage = async () => {
-    if (!input.trim() || thinking || isTypewriting) return;
+    if (!input.trim()) return;
 
     const userMsg = input.trim();
     setInput("");
 
-    setMessages((prev) => [...prev, { sender: "user", text: userMsg }]);
-    setThinking(true);
+    // 1️⃣ Add user message + typing placeholder
+    setMessages((prev) => [
+      ...prev,
+      { sender: "user", text: userMsg },
+      { sender: "bot", typing: true },
+    ]);
+
 
     try {
       const res = await axios.post(`${apiBase}/api/chatbot/chat`, {
@@ -167,22 +186,34 @@ const TeachAgent = ({ user }) => {
 
       const botReply = res.data?.answer || "No reply";
 
-      setTimeout(() => {
-        setThinking(false);
-        typeWriterEffect(botReply, () => {
-          setMessages((prev) => [
-            ...prev,
-            { sender: "bot", text: botReply },
-          ]);
-        });
-      }, 400);
+      // 2️⃣ Replace last typing message
+      setMessages((prev) => {
+        const updated = [...prev];
+        updated[updated.length - 1] = {
+          sender: "bot",
+          text: botReply,
+        };
+        return updated;
+      });
+
     } catch {
-      setThinking(false);
-      setMessages((prev) => [
-        ...prev,
-        { sender: "bot", text: "⚠ API Error" },
-      ]);
+      setMessages((prev) => {
+        const updated = [...prev];
+        updated[updated.length - 1] = {
+          sender: "bot",
+          text: "⚠ API Error",
+        };
+        return updated;
+      });
     }
+
+  };
+
+  const validateEmail = (email) => {
+    const emailRegex =
+      /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
+
+    return emailRegex.test(email);
   };
 
   if (checkingWebsite) {
@@ -225,12 +256,6 @@ const TeachAgent = ({ user }) => {
             </div>
           ))}
 
-          {isTypewriting && (
-            <div className="chat-row">
-              <img src={BotAvatar} className="msg-avatar" alt="bot" />
-              <div className="msg-bubble bot-msg">{typingText}</div>
-            </div>
-          )}
 
           {/* ===== LABELS ALWAYS BELOW WELCOME ===== */}
           {welcomeDone && labels.length > 0 && (
@@ -241,7 +266,7 @@ const TeachAgent = ({ user }) => {
                   className={`label-chip ${showLeadForm ? "disabled" : ""}`}
                   disabled={showLeadForm}
                   onClick={() => {
-                    if (showLeadForm || thinking || isTypewriting) return;
+                    if (showLeadForm || isTypewriting) return;
 
                     setMessages((prev) => [
                       ...prev,
@@ -263,7 +288,13 @@ const TeachAgent = ({ user }) => {
                 <img src={BotAvatar} className="msg-avatar" alt="bot" />
               )}
               <div className={`msg-bubble ${m.sender}-msg`}>
-                {m.text}
+                {m.typing ? (
+                  <div className="typing-dots">
+                    <span></span><span></span><span></span>
+                  </div>
+                ) : (
+                  m.text
+                )}
               </div>
             </div>
           ))}
@@ -290,7 +321,15 @@ const TeachAgent = ({ user }) => {
                 <button
                   className="lead-start-btn"
                   onClick={async () => {
-                    if (!leadName || !leadEmail) return;
+                    if (!leadName.trim()) {
+                      alert("Please enter your name");
+                      return;
+                    }
+
+                    if (!validateEmail(leadEmail)) {
+                      alert("Please enter valid email address");
+                      return;
+                    }
 
                     const res = await axios.post(
                       `${apiBase}/api/chatbot/register-lead`,
@@ -322,15 +361,6 @@ const TeachAgent = ({ user }) => {
                 >
                   Start the chat
                 </button>
-              </div>
-            </div>
-          )}
-
-          {thinking && (
-            <div className="chat-row">
-              <img src={BotAvatar} className="msg-avatar" alt="bot" />
-              <div className="typing-dots">
-                <span></span><span></span><span></span>
               </div>
             </div>
           )}

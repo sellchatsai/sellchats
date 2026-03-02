@@ -140,7 +140,7 @@ function Header({ user, setUser }) {
       setPopup({
         show: true,
         title: "Website Required",
-        message: "Please upload WEBSITE first to customize chatbot.",
+        message: "Please upload website first to customize chatbot.",
         onConfirm: () => {
           setPopup({ ...popup, show: false });
           navigate(`/dashboard/knowledge/${userId}`);
