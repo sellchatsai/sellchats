@@ -16,39 +16,45 @@ import qaRoutes from "./routes/qaRoutes.js";
 import personaRoutes from "./routes/personaRoutes.js";
 import pdfRoutes from "./routes/pdfRoutes.js";
 import adminRoutes from "./routes/adminRoutes.js";
-import contactRoute from "./routes/contact.js";
+import contactRoute from "./routes/contact.js"
 import adminAuthRoutes from "./routes/adminAuthRoutes.js";
 
 dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 4000;
 
-/* ======================================================
-                    CORS CONFIG (FIXED)
-====================================================== */
 
 const allowedOrigins = [
   "https://sellchats.com",
-  "https://www.sellchats.com",
-  "https://ai.sellchats.com",
-  "https://store.sellchats.com"
+  "https://sellchats.com",
 ];
 
-app.use(cors({
-  origin: function(origin, callback) {
-    if (!origin) return callback(null, true);
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      // allow server-to-server, Postman, curl
+      if (!origin) return callback(null, true);
 
-    if (allowedOrigins.includes(origin)) {
-      return callback(null, origin); // 🔥 IMPORTANT: return origin NOT true
-    }
+      // allow known origins
+      if (
+        allowedOrigins.includes(origin) ||
+        origin.endsWith(".vercel.app")
+      ) {
+        return callback(null, true);
+      }
 
-    return callback(new Error("Not allowed by CORS"));
-  },
-  credentials: true
-}));
+      return callback(new Error("Not allowed by CORS"));
+    },
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  })
+);
+
 
 app.options("*", cors());
+
 /* ======================================================
                  MIDDLEWARES
 ====================================================== */
@@ -57,7 +63,7 @@ app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ extended: true, limit: "10mb" }));
 app.use(cookieParser());
 
-/* Allow iframe embedding */
+/* Allow iframe embedding (optional) */
 app.use((req, res, next) => {
   res.setHeader("X-Frame-Options", "ALLOWALL");
   next();
@@ -74,7 +80,7 @@ connectDB();
 ====================================================== */
 
 app.get("/", (req, res) => {
-  res.json({ message: "🚀 Chatbot Backend running" });
+  res.send("🚀 Chatbot Backend running");
 });
 
 app.use("/api/auth", authRoutes);
@@ -89,6 +95,7 @@ app.use("/api/pdf", pdfRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api/contact", contactRoute);
 app.use("/api/admin-auth", adminAuthRoutes);
+
 
 app.use(
   "/uploads",
