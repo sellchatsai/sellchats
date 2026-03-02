@@ -27,33 +27,27 @@ const PORT = process.env.PORT || 4000;
 
 const allowedOrigins = [
   "https://sellchats.com",
-  "https://sellchats.com",
+  "https://www.sellchats.com"
 ];
 
-app.use(
-  cors({
-    origin: function (origin, callback) {
-      // allow server-to-server, Postman, curl
-      if (!origin) return callback(null, true);
+const corsOptions = {
+  origin: function (origin, callback) {
+    if (!origin) return callback(null, true);
 
-      // allow known origins
-      if (
-        allowedOrigins.includes(origin) ||
-        origin.endsWith(".vercel.app")
-      ) {
-        return callback(null, true);
-      }
+    if (
+      allowedOrigins.includes(origin) ||
+      origin.endsWith(".vercel.app")
+    ) {
+      return callback(null, true);
+    }
 
-      return callback(new Error("Not allowed by CORS"));
-    },
-    credentials: true,
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization"],
-  })
-);
+    return callback(new Error("Not allowed by CORS"));
+  },
+  credentials: true,
+};
 
-
-app.options("*", cors());
+app.use(cors(corsOptions));
+app.options("*", cors(corsOptions));
 
 /* ======================================================
                  MIDDLEWARES
