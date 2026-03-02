@@ -28,36 +28,27 @@ const PORT = process.env.PORT || 5000;
                     CORS CONFIG (FIXED)
 ====================================================== */
 
+const allowedOrigins = [
+  "https://sellchats.com",
+  "https://www.sellchats.com",
+  "https://ai.sellchats.com",
+  "https://store.sellchats.com"
+];
+
 app.use(cors({
-  origin: [
-    "https://sellchats.com",
-    "https://www.sellchats.com",
-    "https://ai.sellchats.com",
-    "https://api.vidoprompt.com",
-    "https://store.sellchats.com"
-  ],
+  origin: function(origin, callback) {
+    if (!origin) return callback(null, true);
+
+    if (allowedOrigins.includes(origin)) {
+      return callback(null, origin); // 🔥 IMPORTANT: return origin NOT true
+    }
+
+    return callback(new Error("Not allowed by CORS"));
+  },
   credentials: true
 }));
 
-app.use(
-  cors({
-    origin: function (origin, callback) {
-      // Allow Postman / server-to-server calls
-      if (!origin) return callback(null, false);
-
-      if (
-        allowedOrigins.includes(origin) ||
-        origin.endsWith(".vercel.app")
-      ) {
-        return callback(null, origin); // ✅ Return exact origin (NO wildcard)
-      }
-
-      return callback(new Error("Not allowed by CORS"));
-    },
-    credentials: true
-  })
-);
-
+app.options("*", cors());
 /* ======================================================
                  MIDDLEWARES
 ====================================================== */
