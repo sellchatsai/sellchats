@@ -175,7 +175,7 @@ function FAQAccordion() {
 const handleGoogleSignup = async () => {
   try {
     const res = await axios.get("https://api.sellchats.com/api/auth/google");
-    window.location.href = res.data.url; // 🔥 direct Google login
+    window.location.href = res.data.url; 
   } catch (err) {
     console.error("Google signup failed", err);
   }

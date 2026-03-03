@@ -15,15 +15,8 @@ const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 let otpStore = {};
 
 
-const BACKEND_CALLBACK =
-  process.env.NODE_ENV === "production"
-    ? "https://api.sellchats.com/api/auth/google/callback"
-    : "http://localhost:4000/api/auth/google/callback";
-
-const FRONTEND_URL =
-  process.env.NODE_ENV === "production"
-    ? "https://sellchats.com"
-    : "http://localhost:3000";
+const BACKEND_CALLBACK = process.env.GOOGLE_REDIRECT;
+const FRONTEND_URL = process.env.FRONTEND_URL;
 
 /* ============================================================
    NORMAL LOGIN & REGISTER
