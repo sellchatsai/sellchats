@@ -11,7 +11,7 @@ const Customers = () => {
   const [range, setRange] = useState("all");
   const [loading, setLoading] = useState(true);
 
-  const apiBase = "http://localhost:4000";
+  const apiBase = "https://api.sellchats.com";
 
   // 🔹 FORMAT DATE & TIME
   const formatDateTime = (iso) => {

@@ -15,7 +15,7 @@ const VerifyOTP = () => {
 
   const verify = async () => {
     try {
-      const res = await axios.post("http://localhost:4000/api/auth/verify-otp", {
+      const res = await axios.post("https://api.sellchats.com/api/auth/verify-otp", {
         email,
         otp,
       });

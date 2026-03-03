@@ -14,7 +14,7 @@ const UserDetails = ({ user, setUser }) => {
   const fetchUserDetails = useCallback(
     async (token) => {
       return await axios.get(
-        `http://localhost:4000/api/auth/getUserDetails/${userId}`,
+        `https://api.sellchats.com/api/auth/getUserDetails/${userId}`,
         {
           headers: { Authorization: `Bearer ${token}` },
           withCredentials: true,
@@ -44,7 +44,7 @@ const UserDetails = ({ user, setUser }) => {
           try {
             console.log("Access token expired. Refreshing...");
             const refreshRes = await axios.get(
-              "http://localhost:4000/api/auth/refresh",
+              "https://api.sellchats.com/api/auth/refresh",
               { withCredentials: true }
             );
 
@@ -73,7 +73,7 @@ const UserDetails = ({ user, setUser }) => {
   const handleLogout = async () => {
     try {
       await axios.post(
-        "http://localhost:4000/api/user/logout",
+        "https://api.sellchats.com/api/user/logout",
         {},
         { withCredentials: true }
       );
