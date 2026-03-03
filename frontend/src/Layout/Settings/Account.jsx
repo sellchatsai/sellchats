@@ -5,7 +5,7 @@ import "./account.css";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
 
-const API = "https://api.sellchats.com";
+const API = "http://localhost:4000";
 
 /* ================= ROW ================= */
 const Row = ({ label, children, action }) => {

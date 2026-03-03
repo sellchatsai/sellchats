@@ -52,7 +52,7 @@ const AIPersona = () => {
 
       try {
         const res = await fetch(
-          `https://api.sellchats.com/api/persona/${userId}`
+          `http://localhost:4000/api/persona/${userId}`
         );
         const data = await res.json();
 
@@ -92,7 +92,7 @@ const AIPersona = () => {
     setSaveStatus("loading");
 
     // 2️⃣ Fire backend save (DB + Python)
-    fetch("https://api.sellchats.com/api/persona/save", {
+    fetch("http://localhost:4000/api/persona/save", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({

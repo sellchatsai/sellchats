@@ -26,7 +26,7 @@ const PORT = process.env.PORT || 4000;
 
 
 const allowedOrigins = [
-  "https://sellchats.com",
+  "http://localhost:3000", 
   "https://sellchats.com",
 ];
 

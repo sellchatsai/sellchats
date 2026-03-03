@@ -12,7 +12,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     axios
-      .get("https://api.sellchats.com/api/admin/dashboard-counts", {
+      .get("http://localhost:4000/api/admin/dashboard-counts", {
         params: { userId }
       })
       .then(res => setStats(res.data));

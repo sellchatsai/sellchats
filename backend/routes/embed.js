@@ -12,7 +12,7 @@ router.get("/:userId.js", async (req, res) => {
   const FRONTEND_URL =
     process.env.FRONTEND_URL || "https://sellchats.com";
   const BACKEND_URL =
-    process.env.BACKEND_URL || "https://api.sellchats.com";
+    process.env.BACKEND_URL || "http://localhost:4000";
 
 
   const avatarKey = setting?.avatar || "";

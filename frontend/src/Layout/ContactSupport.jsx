@@ -34,7 +34,7 @@ export default function ContactSupport() {
 
         try {
             await axios.post(
-                "https://api.sellchats.com/api/contact",
+                "http://localhost:4000/api/contact",
                 data,
                 { headers: { "Content-Type": "multipart/form-data" } }
             );

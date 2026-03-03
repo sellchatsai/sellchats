@@ -18,12 +18,12 @@ let otpStore = {};
 const BACKEND_CALLBACK =
   process.env.NODE_ENV === "production"
     ? "https://api.sellchats.com/api/auth/google/callback"
-    : "https://api.sellchats.com/api/auth/google/callback";
+    : "http://localhost:4000/api/auth/google/callback";
 
 const FRONTEND_URL =
   process.env.NODE_ENV === "production"
     ? "https://sellchats.com"
-    : "https://sellchats.com";
+    : "http://localhost:3000";
 
 /* ============================================================
    NORMAL LOGIN & REGISTER
@@ -107,7 +107,7 @@ router.get("/google", (req, res) => {
         "https://www.googleapis.com/auth/userinfo.email",
         "https://www.googleapis.com/auth/userinfo.profile",
       ],
-      redirect_uri: BACKEND_CALLBACK, 
+      redirect_uri: BACKEND_CALLBACK,
     });
 
     res.json({ url });
@@ -130,7 +130,7 @@ router.get("/google/callback", async (req, res) => {
         code,
         client_id: process.env.GOOGLE_CLIENT_ID,
         client_secret: process.env.GOOGLE_CLIENT_SECRET,
-        redirect_uri: BACKEND_CALLBACK, 
+        redirect_uri: BACKEND_CALLBACK,
         grant_type: "authorization_code",
       },
       { headers: { "Content-Type": "application/json" } }

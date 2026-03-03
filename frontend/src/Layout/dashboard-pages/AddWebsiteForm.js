@@ -32,7 +32,7 @@ const AddWebsiteForm = ({ user }) => {
     if (!finalUserId) return;
 
     axios
-      .get(`https://api.sellchats.com/api/chatbot/${finalUserId}`)
+      .get(`http://localhost:4000/api/chatbot/${finalUserId}`)
       .then((res) => {
         const website = res.data?.settings?.website;
         if (website) {
@@ -76,7 +76,7 @@ const AddWebsiteForm = ({ user }) => {
       setJustUploaded(false);
 
       await axios.post(
-        "https://api.sellchats.com/api/webhook/ingest-website",
+        "http://localhost:4000/api/webhook/ingest-website",
         {
           userId: finalUserId,
           source: cleanUrl,
