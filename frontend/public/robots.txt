@@ -1,11 +1,9 @@
 User-agent: *
 Allow: /
 
-# Block private areas (only if these routes exist)
 Disallow: /admin/
 Disallow: /dashboard/
 Disallow: /login/
 Disallow: /account/
 
-# Sitemap location
 Sitemap: https://sellchats.com/sitemap.xml
