@@ -18,6 +18,7 @@ import pdfRoutes from "./routes/pdfRoutes.js";
 import adminRoutes from "./routes/adminRoutes.js";
 import contactRoute from "./routes/contact.js"
 import adminAuthRoutes from "./routes/adminAuthRoutes.js";
+import blogRoutes from "./routes/blogRoutes.js";
 
 dotenv.config();
 
@@ -26,7 +27,7 @@ const PORT = process.env.PORT || 4000;
 
 
 const allowedOrigins = [
-  "http://localhost:3000", 
+  "https://sellchats.com", 
   "https://sellchats.com",
 ];
 
@@ -95,7 +96,7 @@ app.use("/api/pdf", pdfRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api/contact", contactRoute);
 app.use("/api/admin-auth", adminAuthRoutes);
-
+app.use("/api/blog", blogRoutes);
 
 app.use(
   "/uploads",

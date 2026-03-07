@@ -1,12 +1,40 @@
-import { Link } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import axios from "axios";
 import HomeHeader from "../HomeHeader";
-import { blogs } from "./blogData";
 import "../Blog/BlogPage.css";
 
 export default function BlogPage() {
 
+  const [blogs, setBlogs] = useState([]);
+
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+
+    const day = date.getDate();
+    const month = date.toLocaleString("en-US", { month: "long" });
+    const year = date.getFullYear();
+
+    return `${day} ${month} ${year}`;
+  };
+
+  const loadBlogs = async () => {
+    try {
+
+      const res = await axios.get("https://api.sellchats.com/api/blog");
+
+      console.log(res.data); // check console
+
+      setBlogs(res.data);
+
+    } catch (err) {
+      console.log("Blog fetch error:", err);
+    }
+  };
+
   useEffect(() => {
+
+    loadBlogs();
+
     const elements = document.querySelectorAll(".animate");
 
     const observer = new IntersectionObserver(
@@ -21,6 +49,7 @@ export default function BlogPage() {
     );
 
     elements.forEach((el) => observer.observe(el));
+
   }, []);
 
   return (
@@ -35,20 +64,34 @@ export default function BlogPage() {
           </h2>
 
           <div className="blog-grid">
+
             {blogs.map((blog, index) => (
-              <Link
-                to={`/blog/${blog.slug}`}
-                key={blog.slug}
+
+              <a
+                href={blog.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                key={blog._id}
                 className={`blog-card animate fade-up delay-${index}`}
               >
-                <img src={blog.image} alt={blog.title} />
-                <span>{blog.category}</span>
+
+                <img
+                  src={`https://api.sellchats.com/uploads/blogs/${blog.image}`}
+                  alt={blog.title}
+                />
+
+                <span>{blog.label}</span>
+
                 <h3>{blog.title}</h3>
+
                 <p>
-                  by {blog.author} • {blog.date}
+                  by {blog.author} • {formatDate(blog.date)}
                 </p>
-              </Link>
+
+              </a>
+
             ))}
+
           </div>
 
         </div>
