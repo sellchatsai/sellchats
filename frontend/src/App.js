@@ -59,7 +59,6 @@ import ContactSupport from "./Layout/ContactSupport";
 import FAQPage from "./Layout/FAQPage";
 import PricingPage from "./Layout/PricingPage";
 import BlogPage from "./Layout/Blog/BlogPage";
-import BlogDetail from "./Layout/Blog/BlogDetail";
 
 import Terms from "./Layout/Footer/Terms";
 import Privacy from "./Layout/Footer/Privacy";
@@ -146,7 +145,7 @@ function AppContent() {
           <Route path="/faq" element={<FAQPage />} />
           <Route path="/pricing" element={<PricingPage />} />
           <Route path="/blog" element={<BlogPage />} />
-          <Route path="/blog/:slug" element={<BlogDetail />} />
+  
 
           <Route path="/terms" element={<Terms />} />
           <Route path="/privacy" element={<Privacy />} />
