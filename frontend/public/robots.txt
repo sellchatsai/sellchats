@@ -1,3 +1,9 @@
-# https://www.robotstxt.org/robotstxt.html
 User-agent: *
-Disallow:
+Allow: /
+
+Disallow: /admin/
+Disallow: /dashboard/
+Disallow: /login/
+Disallow: /account/
+
+Sitemap: https://sellchats.com/sitemap.xml
