@@ -1,6 +1,5 @@
 import { useParams, useNavigate } from "react-router-dom";
 import HomeHeader from "../HomeHeader";
-import { blogs } from "./blogData";
 import "../Blog/BlogPage.css";
 
 export default function BlogDetail() {
