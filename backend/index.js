@@ -28,7 +28,7 @@ const PORT = process.env.PORT || 4000;
 
 const allowedOrigins = [
   "https://sellchats.com",
-  "https://admin.sellchats.com",
+  "https://honeydew-caterpillar-506030.hostingersite.com",
 ];
 
 app.use(
