@@ -28,7 +28,7 @@ const PORT = process.env.PORT || 4000;
 
 const allowedOrigins = [
   "https://sellchats.com", 
-  "https://sellchats.com",
+  "https://admin.sellchats.com",
 ];
 
 app.use(
