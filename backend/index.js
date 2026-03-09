@@ -27,17 +27,15 @@ const PORT = process.env.PORT || 4000;
 
 
 const allowedOrigins = [
-  "https://sellchats.com", 
+  "https://sellchats.com",
   "https://admin.sellchats.com",
 ];
 
 app.use(
   cors({
     origin: function (origin, callback) {
-      // allow server-to-server, Postman, curl
       if (!origin) return callback(null, true);
 
-      // allow known origins
       if (
         allowedOrigins.includes(origin) ||
         origin.endsWith(".vercel.app")
@@ -45,7 +43,7 @@ app.use(
         return callback(null, true);
       }
 
-      return callback(new Error("Not allowed by CORS"));
+      return callback(null, false);
     },
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
@@ -53,8 +51,10 @@ app.use(
   })
 );
 
-
-app.options("*", cors());
+app.options("*", cors({
+  origin: allowedOrigins,
+  credentials: true
+}));
 
 /* ======================================================
                  MIDDLEWARES
