@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { Helmet } from "react-helmet-async";
 import HomeHeader from "../HomeHeader";
 import "../Blog/BlogPage.css";
 
@@ -49,19 +50,48 @@ export default function BlogPage() {
     );
 
     elements.forEach((el) => observer.observe(el));
+     return () => observer.disconnect();
 
   }, []);
 
+    const blogSchema = {
+    "@context": "https://schema.org",
+    "@type": "Blog",
+    name: "Sell Chats Blog",
+    url: "https://sellchats.com/blog",
+    description:
+      "Read Sell Chats blogs about AI chatbots, real estate chatbots, ecommerce chatbots, coaching chatbots, and business automation.",
+    publisher: {
+      "@type": "Organization",
+      name: "Sell Chats",
+      url: "https://sellchats.com/"
+    }
+  };
+
   return (
     <>
+       <Helmet>
+    <title>AI Chatbot Blog for Business Growth, Sales & Automation | Sell Chats</title>
+        <meta
+  name="description"
+  content="Explore Sell Chats blogs on AI chatbots, real estate chatbots, ecommerce automation, coaching chatbots, lead generation, sales growth, and smart business support."
+/>
+
+        <meta name="robots" content="index, follow" />
+        <link rel="canonical" href="https://sellchats.com/blog" />
+
+        <script type="application/ld+json">
+          {JSON.stringify(blogSchema)}
+        </script>
+      </Helmet>
       <HomeHeader />
 
       <section className="blog-list">
         <div className="container">
 
-          <h2 className="animate fade-down">
+          <h1 className="animate fade-down">
             Chatbot Marketing
-          </h2>
+          </h1>
 
           <div className="blog-grid">
 
@@ -82,7 +112,7 @@ export default function BlogPage() {
 
                 <span>{blog.label}</span>
 
-                <h3>{blog.title}</h3>
+                <h2>{blog.title}</h2>
 
                 <p>
                   by {blog.author} • {formatDate(blog.date)}
