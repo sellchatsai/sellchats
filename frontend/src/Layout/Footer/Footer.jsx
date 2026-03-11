@@ -26,7 +26,7 @@ export default function Footer() {
                 </div>
             </div>
 
-            <p className="noupe-desc">
+           <p className="noupe-desc">
                 SellChats provides enterprise-grade AI chatbot APIs that allow businesses to deploy intelligent,
                 multi-language conversational agents with automatic knowledge ingestion and rapid integration—no training
                 or infrastructure management required.

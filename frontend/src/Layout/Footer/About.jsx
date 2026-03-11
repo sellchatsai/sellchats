@@ -32,18 +32,13 @@ export default function About() {
 
                     <h1 className="fade-up">About Us</h1>
 
-                    <p className="about-desc fade-up delay-1">
-                        <strong>SellChats</strong> is an AI-powered conversational platform built to
-                        help businesses automate customer support and engagement effortlessly.
-                        <br /><br />
-                        Our intelligent, multi-language chat solutions instantly learn from your
-                        website content and respond to visitors in real time — just like a trained
-                        support agent.
-                        <br /><br />
-                        Trusted by growing teams worldwide, <strong>SellChats</strong> enables faster,
-                        smarter, and scalable conversations without any code, setup, or technical
-                        complexity.
-                    </p>
+                   <p className="about-desc fade-up delay-1">
+  <strong>SellChats</strong> is an AI-powered chatbot platform built to help businesses automate customer support, lead generation, and website engagement with smart real-time conversations.
+  <br /><br />
+  Our intelligent, multi-language chat solutions learn from your website content and instantly respond to visitors like a trained virtual assistant — helping businesses save time, improve response speed, and increase conversions.
+  <br /><br />
+  Whether you run a <strong>real estate business</strong>, <strong>ecommerce store</strong>, <strong>coaching business</strong>, or service-based company, <strong>SellChats</strong> helps you manage customer queries, capture leads, and scale support without coding, complex setup, or technical hassle.
+</p>
                 </div>
             </section>
 

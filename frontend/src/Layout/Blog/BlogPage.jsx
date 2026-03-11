@@ -49,9 +49,10 @@ export default function BlogPage() {
     );
 
     elements.forEach((el) => observer.observe(el));
+     return () => observer.disconnect();
 
   }, []);
-
+  
   return (
     <>
       <HomeHeader />
@@ -59,6 +60,13 @@ export default function BlogPage() {
       <section className="blog-list">
         <div className="container">
 
+<<<<<<< HEAD
+=======
+          <h1 className="animate fade-down">
+            Chatbot Marketing
+          </h1>
+
+>>>>>>> a847ece2e1bab3b7eef080a475e14981937f95b0
           <div className="blog-grid">
 
             {blogs.map((blog, index) => (
@@ -78,7 +86,7 @@ export default function BlogPage() {
 
                 <span>{blog.label}</span>
 
-                <h3>{blog.title}</h3>
+                <h2>{blog.title}</h2>
 
                 <p>
                   by {blog.author} • {formatDate(blog.date)}
