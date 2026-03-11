@@ -59,10 +59,6 @@ export default function BlogPage() {
       <section className="blog-list">
         <div className="container">
 
-          <h2 className="animate fade-down">
-            Chatbot Marketing
-          </h2>
-
           <div className="blog-grid">
 
             {blogs.map((blog, index) => (
