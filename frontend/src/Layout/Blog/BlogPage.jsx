@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { Helmet } from "react-helmet-async";
 import HomeHeader from "../HomeHeader";
 import "../Blog/BlogPage.css";
 
@@ -70,20 +69,6 @@ export default function BlogPage() {
 
   return (
     <>
-       <Helmet>
-    <title>AI Chatbot Blog for Business Growth, Sales & Automation | Sell Chats</title>
-        <meta
-  name="description"
-  content="Explore Sell Chats blogs on AI chatbots, real estate chatbots, ecommerce automation, coaching chatbots, lead generation, sales growth, and smart business support."
-/>
-
-        <meta name="robots" content="index, follow" />
-        <link rel="canonical" href="https://sellchats.com/blog" />
-
-        <script type="application/ld+json">
-          {JSON.stringify(blogSchema)}
-        </script>
-      </Helmet>
       <HomeHeader />
 
       <section className="blog-list">
