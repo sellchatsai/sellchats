@@ -52,21 +52,7 @@ export default function BlogPage() {
      return () => observer.disconnect();
 
   }, []);
-
-    const blogSchema = {
-    "@context": "https://schema.org",
-    "@type": "Blog",
-    name: "Sell Chats Blog",
-    url: "https://sellchats.com/blog",
-    description:
-      "Read Sell Chats blogs about AI chatbots, real estate chatbots, ecommerce chatbots, coaching chatbots, and business automation.",
-    publisher: {
-      "@type": "Organization",
-      name: "Sell Chats",
-      url: "https://sellchats.com/"
-    }
-  };
-
+  
   return (
     <>
       <HomeHeader />
