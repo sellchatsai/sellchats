@@ -18,22 +18,6 @@ export default function About() {
             return () => clearTimeout(timer);
         }
     }, [index, text]);
-    
-    const aboutSchema = {
-  "@context": "https://schema.org",
-  "@type": "AboutPage",
-  name: "About Sell Chats",
-  url: "https://sellchats.com/about",
-  description:
-    "Learn about Sell Chats, an AI-powered chatbot platform that helps businesses automate customer support, engagement, and lead conversations.",
-  mainEntity: {
-    "@type": "Organization",
-    name: "Sell Chats",
-    url: "https://sellchats.com/",
-    description:
-      "Sell Chats is an AI-powered conversational platform built to help businesses automate customer support, engagement, and lead generation."
-  }
-};
 
     return (
         <>
